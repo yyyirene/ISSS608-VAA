@@ -74,7 +74,7 @@ Let us call the `ggplot()` function using the code chunk on the right.
 ggplot(data=exam_data)
 ```
 
-::: {.note}
+::: note
 -   A blank canvas appears.
 -   `ggplot()` initializes a ggplot object.
 -   The `data` argument defines the dataset to be used for plotting.
