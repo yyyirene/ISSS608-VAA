@@ -13,6 +13,10 @@ In this chapter, we will learn the basic principles and essential components of 
 
 ### 1.2.1 Installing and loading the required libraries
 
+::: callout-note
+The code chunk on the right assumes that you already have [**pacman**](https://cran.r-project.org/web/packages/pacman/index.html) package installed. If not, please go ahead install pacman first.
+:::
+
 ```{r}
 pacman::p_load(tidyverse)
 ```
@@ -46,9 +50,47 @@ ggplot(data=exam_data, aes(x = MATHS)) +
 ```
 :::
 
+As you can see that the code chunk is relatively simple if R Graphics is used.
+
+::: callout-tip
+**Key Advantages of ggplot2 for Beginners:** As pointed out by [Hadley Wickham](http://varianceexplained.org/r/teach_ggplot2_to_beginners/#comment-1745406157)
+
+1.  **Automatic Legends:**\
+
+    ggplot2 automatically generates legends based on aesthetics, saving beginners from manually coding them (as required in base R).
+
+2.  **Easy Faceting:**\
+
+    ggplot2 simplifies the creation of subplots using facet_wrap() or facet_grid(), whereas base R requires complex loops and layout setup.
+
+3.  **Encourages Tidy Data:**\
+
+    Working with ggplot2 promotes the use of tidy data, which aligns with good practices in R and integrates well with tools like dplyr and lm().
+
+4.  **Better Visuals by Default:**\
+
+    ggplot2 produces cleaner, more visually appealing plots with minimal effort, making it more accessible for beginners.
+:::
+
+::: callout-important
+The transferable skills from ggplot2 are not the idiosyncrasies of plotting syntax, but a powerful way of thinking about visualisation, as a way of mapping between variables and the visual properties of geometric objects that you can perceive.
+:::
+
 ## 1.4 Grammar of Graphics
 
+There are two principles in Grammar of Graphics, they are:
+
+-   Graphics = distinct layers of grammatical elements
+
+-   Meaningful plots through aesthetic mapping
+
+A good grammar of graphics will allow us to gain insight into the composition of complicated graphics, and reveal unexpected connections between seemingly different graphics (Cox 1978). It also provides a strong foundation for understanding a diverse range of graphics. Furthermore, it may also help guide us on what a well-formed or correct graphic looks like, but there will still be many grammatically correct but nonsensical graphics.
+
 ### 1.4.1 A Layered Grammar of Graphics
+
+![](images/clipboard-3781596945.png){width="626"}
+
+Reference: Hadley Wickham (2010) [“A layered grammar of graphics.”](https://vita.had.co.nz/papers/layered-grammar.html) *Journal of Computational and Graphical Statistics*, vol. 19, no. 1, pp. 3–28.
 
 A short description of each building block are as follows:
 
@@ -74,11 +116,14 @@ Let us call the `ggplot()` function using the code chunk on the right.
 ggplot(data=exam_data)
 ```
 
-::: note
+::: callout-note
 -   A blank canvas appears.
+
 -   `ggplot()` initializes a ggplot object.
+
 -   The `data` argument defines the dataset to be used for plotting.
--   If the dataset is not already a `data.frame`, it will be converted to one by `fortify()`.
+
+-   If the dataset is not already a `data.frame`, it will be converted to one by `fortify()`
 :::
 
 ## 1.6 Essential Grammatical Elements in ggplot2:
@@ -90,8 +135,8 @@ ggplot(data=exam_data,
        aes(x= MATHS))
 ```
 
-::: Note
--   ggplot includes the x-axis and the axis’s label.
+::: callout-note
+ggplot includes the x-axis and the axis’s label.
 :::
 
 ## 1.7 Essential Grammatical Elements in ggplot2: geom
@@ -111,6 +156,10 @@ Geometric objects are the actual marks we put on a plot. Examples include:
 -   *geom_polygon* for drawing arbitrary shapes
 
 -   *geom_map* for drawing polygons in the shape of a map! (You can access the data to use for these maps by using the map_data() function).
+
+    ![](images/clipboard-3222258023.png){width="644"}
+
+-   A plot must have at least one geom; there is no upper limit. You can add a geom to a plot using the **+** operator.
 
 ### 1.7.1 Geometric Objects: geom_bar
 

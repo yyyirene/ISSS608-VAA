@@ -363,6 +363,19 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <h2 class="anchored" data-anchor-id="getting-started">1.2 Getting started</h2>
 <section id="installing-and-loading-the-required-libraries" class="level3">
 <h3 class="anchored" data-anchor-id="installing-and-loading-the-required-libraries">1.2.1 Installing and loading the required libraries</h3>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The code chunk on the right assumes that you already have <a href="https://cran.r-project.org/web/packages/pacman/index.html"><strong>pacman</strong></a> package installed. If not, please go ahead install pacman first.</p>
+</div>
+</div>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>pacman<span class="sc">::</span><span class="fu">p_load</span>(tidyverse)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
@@ -423,11 +436,60 @@ dbl (3): ENGLISH, MATHS, SCIENCE
 </div>
 </div>
 </div>
+<p>As you can see that the code chunk is relatively simple if R Graphics is used.</p>
+<div class="callout callout-style-default callout-tip callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Tip
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p><strong>Key Advantages of ggplot2 for Beginners:</strong> As pointed out by <a href="http://varianceexplained.org/r/teach_ggplot2_to_beginners/#comment-1745406157">Hadley Wickham</a></p>
+<ol type="1">
+<li><p><strong>Automatic Legends:</strong><br>
+</p>
+<p>ggplot2 automatically generates legends based on aesthetics, saving beginners from manually coding them (as required in base R).</p></li>
+<li><p><strong>Easy Faceting:</strong><br>
+</p>
+<p>ggplot2 simplifies the creation of subplots using facet_wrap() or facet_grid(), whereas base R requires complex loops and layout setup.</p></li>
+<li><p><strong>Encourages Tidy Data:</strong><br>
+</p>
+<p>Working with ggplot2 promotes the use of tidy data, which aligns with good practices in R and integrates well with tools like dplyr and lm().</p></li>
+<li><p><strong>Better Visuals by Default:</strong><br>
+</p>
+<p>ggplot2 produces cleaner, more visually appealing plots with minimal effort, making it more accessible for beginners.</p></li>
+</ol>
+</div>
+</div>
+<div class="callout callout-style-default callout-important callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Important
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>The transferable skills from ggplot2 are not the idiosyncrasies of plotting syntax, but a powerful way of thinking about visualisation, as a way of mapping between variables and the visual properties of geometric objects that you can perceive.</p>
+</div>
+</div>
 </section>
 <section id="grammar-of-graphics" class="level2">
 <h2 class="anchored" data-anchor-id="grammar-of-graphics">1.4 Grammar of Graphics</h2>
+<p>There are two principles in Grammar of Graphics, they are:</p>
+<ul>
+<li><p>Graphics = distinct layers of grammatical elements</p></li>
+<li><p>Meaningful plots through aesthetic mapping</p></li>
+</ul>
+<p>A good grammar of graphics will allow us to gain insight into the composition of complicated graphics, and reveal unexpected connections between seemingly different graphics (Cox 1978). It also provides a strong foundation for understanding a diverse range of graphics. Furthermore, it may also help guide us on what a well-formed or correct graphic looks like, but there will still be many grammatically correct but nonsensical graphics.</p>
 <section id="a-layered-grammar-of-graphics" class="level3">
 <h3 class="anchored" data-anchor-id="a-layered-grammar-of-graphics">1.4.1 A Layered Grammar of Graphics</h3>
+<p><img src="images/clipboard-3781596945.png" class="img-fluid" width="626"></p>
+<p>Reference: Hadley Wickham (2010) <a href="https://vita.had.co.nz/papers/layered-grammar.html">“A layered grammar of graphics.”</a> <em>Journal of Computational and Graphical Statistics</em>, vol.&nbsp;19, no. 1, pp.&nbsp;3–28.</p>
 <p>A short description of each building block are as follows:</p>
 <ul>
 <li><p><strong>Data</strong>: The dataset being plotted.</p></li>
@@ -453,13 +515,23 @@ dbl (3): ENGLISH, MATHS, SCIENCE
 </div>
 </div>
 </div>
-<div class="note">
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
 <ul>
-<li>A blank canvas appears.</li>
-<li><code>ggplot()</code> initializes a ggplot object.</li>
-<li>The <code>data</code> argument defines the dataset to be used for plotting.</li>
-<li>If the dataset is not already a <code>data.frame</code>, it will be converted to one by <code>fortify()</code>.</li>
+<li><p>A blank canvas appears.</p></li>
+<li><p><code>ggplot()</code> initializes a ggplot object.</p></li>
+<li><p>The <code>data</code> argument defines the dataset to be used for plotting.</p></li>
+<li><p>If the dataset is not already a <code>data.frame</code>, it will be converted to one by <code>fortify()</code></p></li>
 </ul>
+</div>
 </div>
 </section>
 <section id="essential-grammatical-elements-in-ggplot2" class="level2">
@@ -478,10 +550,18 @@ dbl (3): ENGLISH, MATHS, SCIENCE
 </div>
 </div>
 </div>
-<div class="Note">
-<ul>
-<li>ggplot includes the x-axis and the axis’s label.</li>
-</ul>
+<div class="callout callout-style-default callout-note callout-titled">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon"></i>
+</div>
+<div class="callout-title-container flex-fill">
+Note
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>ggplot includes the x-axis and the axis’s label.</p>
+</div>
 </div>
 </section>
 <section id="essential-grammatical-elements-in-ggplot2-geom" class="level2">
@@ -494,7 +574,9 @@ dbl (3): ENGLISH, MATHS, SCIENCE
 <li><p><em>geom_bar</em> for drawing bars (e.g., for bar charts)</p></li>
 <li><p><em>geom_histogram</em> for drawing binned values (e.g.&nbsp;a histogram)</p></li>
 <li><p><em>geom_polygon</em> for drawing arbitrary shapes</p></li>
-<li><p><em>geom_map</em> for drawing polygons in the shape of a map! (You can access the data to use for these maps by using the map_data() function).</p></li>
+<li><p><em>geom_map</em> for drawing polygons in the shape of a map! (You can access the data to use for these maps by using the map_data() function).</p>
+<p><img src="images/clipboard-3222258023.png" class="img-fluid" width="644"></p></li>
+<li><p>A plot must have at least one geom; there is no upper limit. You can add a geom to a plot using the <strong>+</strong> operator.</p></li>
 </ul>
 <section id="geometric-objects-geom_bar" class="level3">
 <h3 class="anchored" data-anchor-id="geometric-objects-geom_bar">1.7.1 Geometric Objects: geom_bar</h3>
