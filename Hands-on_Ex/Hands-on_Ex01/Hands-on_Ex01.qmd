@@ -18,7 +18,7 @@ The code chunk on the right assumes that you already have [**pacman**](https://c
 :::
 
 ```{r}
-pacman::p_load(tidyverse)
+pacman::p_load(tidyverse,ggplot2,dplyr,qcc)
 ```
 
 ### 1.2.2 Importing data
@@ -473,3 +473,109 @@ ggplot(data=exam_data,
 -   [Learning ggplot2 on Paper – Layer](https://henrywang.nl/learning-ggplot2-on-paper-layer/)
 
 -   [Learning ggplot2 on Paper – Scale](https://henrywang.nl/tag/learning-ggplot2-on-paper/)
+
+## Statistical Graphics Methods Week 1
+
+```{r}
+Singapore2017 <- read_csv("data/Singapore-2017.csv")
+```
+
+### Age-sex Pyramid
+
+```{r}
+#| code-fold: true
+#| code-summary: "Show the code"
+
+df_long <- Singapore2017 %>%
+  pivot_longer(cols = c("M", "F"), names_to = "Gender", values_to = "Count") %>%
+  mutate(Gender = recode(Gender, "M" = "Male", "F" = "Female"))
+
+total_population <- sum(df_long$Count)
+
+df_long <- df_long %>%
+  mutate(Percent = Count / total_population * 100,
+         Percent = ifelse(Gender == "Male", -Percent, Percent))
+
+df_long$Age <- factor(df_long$Age,
+                      levels = unique(Singapore2017$Age)) 
+
+ggplot(df_long, aes(x = Age, y = Percent, fill = Gender)) +
+  geom_bar(stat = "identity", width = 0.9) +
+  coord_flip() +
+  scale_y_continuous(labels = function(x) paste0(abs(x), "%")) +
+  scale_fill_manual(values = c("Male" = "steelblue", "Female" = "lightcoral")) +
+  labs(title = "Singapore Population Pyramid (2017)",
+       x = "Age Group", y = "Population (%)") +
+  theme_minimal() +
+  theme(legend.position = "top",
+        plot.title = element_text(hjust = 0.5))
+
+
+```
+
+### Pareto Chart
+
+```{r}
+#| code-fold: true
+#| code-summary: "Show the code"
+
+defects <- c(
+  shrink = 67,
+  porosity = 13,
+  weld_LOF = 9,
+  shell_inclusion = 6,
+  hard_alpha_inclusion = 3,
+  tungsten_inclusion = 1
+)
+
+df <- data.frame(
+  defect = names(defects),
+  freq = as.numeric(defects)
+) %>%
+  arrange(desc(freq)) %>%
+  mutate(
+    cum_freq = cumsum(freq),
+    cum_percent = cum_freq / sum(freq) * 100,
+    defect = factor(defect, levels = defect)  # 控制 x 轴顺序
+  )
+
+
+ggplot(df, aes(x = defect, y = freq)) +
+  geom_col(fill = "tomato") +
+  geom_line(aes(y = cum_percent * max(freq) / 100), group = 1, color = "steelblue", size = 1) +
+  geom_point(aes(y = cum_percent * max(freq) / 100), color = "steelblue", size = 2) +
+  scale_y_continuous(
+    name = "Defect Frequency",
+    sec.axis = sec_axis(~ . * 100 / max(df$freq), name = "Cumulative Percentage (%)")
+  ) +
+  labs(
+    title = "Pareto Chart of Titanium Defects",
+    x = "Defect Type"
+  ) +
+  theme_minimal() +
+  theme(
+    axis.title.y.right = element_text(color = "steelblue"),
+    axis.text.x = element_text(angle = 45, hjust = 1)
+  )
+
+
+```
+
+### Trellis Display
+
+```{r}
+#| code-fold: true
+#| code-summary: "Show the code"
+
+exam_long <- exam_data %>%
+  pivot_longer(cols = c(ENGLISH, MATHS, SCIENCE),
+               names_to = "Subject",
+               values_to = "Score")
+
+ggplot(exam_long, aes(x = Score, fill = Subject)) +
+  geom_histogram(bins = 20, color = "black", alpha = 0.7) +
+  facet_wrap(~ Subject, scales = "free") +
+  labs(title = "Trellis Display: Score Distribution by Subject") +
+  theme_minimal()
+
+```

@@ -140,7 +140,7 @@ ggplot(data=exam_data,
 Comparison summary
 
 |   | geom_label_repel() | geom_label() |
-|:-------------------:|:------------------------:|:------------------------:|
+|:--:|:--:|:--:|
 | Automatically Avoid Overlap | Yes | No (labels may overlap) |
 | Font Style | Bold (`fontface = "bold"`) | Default font |
 | Label Position | Automatically calculated optimal position | Fixed position (centered horizontally, slightly above) |
@@ -536,7 +536,7 @@ patchwork & theme_economist()
 
 -   [ggplot2 Theme Elements Reference Sheet](https://isabella-b.com/blog/ggplot2-theme-elements-reference/)
 
-## Visual Analytics Method(s) of the Week 2 
+## Visual Analytics Method(s) of the Week 2
 
 ### Boxplot
 
@@ -580,7 +580,7 @@ ggplot(exam_data, aes(x = GENDER, y = ENGLISH)) +
   ggtitle("Dot Plot of English Scores by Gender")
 ```
 
-###  **Raincloud Plot** (combines boxplot, violin, and jittered points)
+### **Raincloud Plot** (combines boxplot, violin, and jittered points)
 
 ```{r}
 #| code-fold: true
