@@ -1,12 +1,14 @@
 ---
 title: "Hands-on Exercise 2"
 author: "yang yayong"
+date: "April 22 2025"
 date-modified: "last-modified"
 execute:
   eval: true
   echo: true
   message: false
   freeze: true
+  warning: FALSE
 ---
 
 # 2  Beyond ggplot2 Fundamentals
@@ -50,8 +52,8 @@ For the purpose of this exercise, a data file called *Exam_data* will be used. I
 
 The code chunk below imports *exam_data.csv* into R environment by using [*read_csv()*](https://readr.tidyverse.org/reference/read_delim.html) function of [**readr**](https://readr.tidyverse.org/) package. **readr** is one of the tidyverse package.
 
-```{r}
-exam_data <- read_csv("Exam_data.csv")
+```{r }
+exam_data <- read_csv("Exam_data.csv",show_col_types = FALSE)
 ```
 
 There are a total of seven attributes in the exam_data tibble data frame. Four of them are categorical data type and the other three are in continuous data type.
@@ -137,10 +139,10 @@ ggplot(data=exam_data,
 ```
 :::
 
-Comparison summary
+### Comparison summary
 
 |   | geom_label_repel() | geom_label() |
-|:--:|:--:|:--:|
+|:----------------------:|:----------------------:|:----------------------:|
 | Automatically Avoid Overlap | Yes | No (labels may overlap) |
 | Font Style | Bold (`fontface = "bold"`) | Default font |
 | Label Position | Automatically calculated optimal position | Fixed position (centered horizontally, slightly above) |
@@ -381,7 +383,7 @@ p2 <- ggplot(data=exam_data,
                  fill="grey90") +
   coord_cartesian(xlim=c(0,100)) +
   ggtitle("Distribution of English scores")
-
+p2
 ```
 :::
 
@@ -390,7 +392,7 @@ Lastly, we will draw a scatterplot for English score versus Maths score by as sh
 ```{r}
 #| code-fold: true
 #| code-summary: "Show the code"
-p3 <- ggplot(data=exam_data, 
+p3 <- ggplot(data=exam_data,
              aes(x= MATHS, 
                  y=ENGLISH)) +
   geom_point() +
@@ -398,7 +400,8 @@ p3 <- ggplot(data=exam_data,
               size=0.5) +  
   coord_cartesian(xlim=c(0,100),
                   ylim=c(0,100)) +
-  ggtitle("English scores versus Maths scores for Primary 3")
+  ggtitle("English scores versus Maths scores for Primary 3") +
+  theme(plot.title = element_text(size = 11))
 p3
 ```
 
@@ -438,6 +441,8 @@ We can plot more complex composite by using appropriate operators. For example, 
 ## The plot
 
 ```{r echo=FALSE}
+#| fig-width: 18
+#| fig-height: 7
 (p1 / p2) | p3
 ```
 
@@ -462,6 +467,8 @@ In order to identify subplots in text, **patchwork** also provides auto-tagging 
 ## The plot
 
 ```{r echo=FALSE}
+#| fig-width: 18
+#| fig-height: 7
 ((p1 / p2) | p3) + 
   plot_annotation(tag_levels = 'I')
 ```
@@ -500,6 +507,19 @@ p3 + inset_element(p2,
 ```
 :::
 
+### Changing the plot to the right bottom:
+
+```{r}
+#| code-fold: true
+#| code-summary: "Show the code"
+p3 + inset_element(p2, 
+                   left = 0.5,   
+                   bottom = 0,    
+                   right = 0.98,  
+                   top = 0.3)     
+
+```
+
 ### 2.5.6 Creating a composite figure by using patchwork and ggtheme
 
 Figure below is created by combining patchwork and theme_economist() of ggthemes package discussed earlier.
@@ -508,6 +528,9 @@ Figure below is created by combining patchwork and theme_economist() of ggthemes
 ## The plot
 
 ```{r echo=FALSE}
+#| fig-width: 18
+#| fig-height: 7
+
 patchwork <- (p1 / p2) | p3
 patchwork & theme_economist()
 ```
@@ -515,6 +538,9 @@ patchwork & theme_economist()
 ## The code
 
 ```{r eval=FALSE}
+#| fig-width: 18
+#| fig-height: 7
+
 patchwork <- (p1 / p2) | p3
 patchwork & theme_economist()
 ```
