@@ -142,7 +142,7 @@ ggplot(data=exam_data,
 ### Comparison summary
 
 |   | geom_label_repel() | geom_label() |
-|:----------------------:|:----------------------:|:----------------------:|
+|:--:|:--:|:--:|
 | Automatically Avoid Overlap | Yes | No (labels may overlap) |
 | Font Style | Bold (`fontface = "bold"`) | Default font |
 | Label Position | Automatically calculated optimal position | Fixed position (centered horizontally, slightly above) |
