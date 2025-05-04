@@ -11,7 +11,7 @@ execute:
   warning: FALSE
 ---
 
-## The Scene 
+## The Scene
 
 A local online media company that publishes daily content on digital platforms is planning to release an article on **demographic structures and distribution of Singapore in 2024**.
 
@@ -153,8 +153,7 @@ S_data <- S_data %>%
 
 **6.1Data preparation for Region :**
 
--   Mapping Planning Area (PA) to Region:
-    A reference table is manually constructed to assign each Planning Area to one of Singapore’s five broad Regions (e.g., North, East). This enables aggregation and comparison at the regional level.
+-   Mapping Planning Area (PA) to Region: A reference table is manually constructed to assign each Planning Area to one of Singapore’s five broad Regions (e.g., North, East). This enables aggregation and comparison at the regional level.
 
 -   **Expanding Data and Merging Region Info:**\
     The dataset is expanded using `uncount()` to generate one row per individual based on the population count (`Pop`). Then, `left_join()` integrates the region information into the dataset. This transformation facilitates detailed demographic breakdowns by Region, Age, and Gender in subsequent analysis and plots.
@@ -307,7 +306,18 @@ mean_labels <- avg_age %>%
     label_x = ifelse(Sex == "Males", mean_age - 8, mean_age + 5)  # 左右错开
   )
 
-#Step 4 : Median caculation
+# Step 4 : Median calculation with cleaning
+df_long_region <- df_long_region %>%
+  mutate(
+    Age = ifelse(Age == "90_and_Over", "90", Age),  # 替换文本
+    Age = as.numeric(Age)                           # 转换为数值
+  ) %>%
+  filter(!is.na(Age))  # 过滤掉无法转换的行
+
+median_age <- median(df_long_region$Age)
+df_median <- data.frame(Median = median_age)
+
+
 median_age <- median(df_long_region$Age, na.rm = TRUE)
 df_median <- data.frame(Median = median_age)
 
@@ -431,7 +441,7 @@ P2 <- ggplot(S_long, aes(x = Age_numeric, fill = Sex, color = Sex)) +
   scale_color_manual(values = c("Males" = "#91C4F2", "Females" = "#F4B183"))
 ```
 
-### **Visualisation I** 
+### **Visualisation I**
 
 ::: panel-tabset
 ## The plot
@@ -485,7 +495,7 @@ P1 + P2 +
 
 -   The density plot shows peaks around age 34–35 for both genders.
 
--    Mean age is slightly higher for females (34.7) than males (34.3).
+-   Mean age is slightly higher for females (34.7) than males (34.3).
 
 -   The female curve extends further right, suggesting longer life expectancy.
 
