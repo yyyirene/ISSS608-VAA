@@ -686,13 +686,14 @@ P6<-ggplot(df_wide, aes(x = Region, y = fct_rev(Age_Group), fill = SexRatio)) +
   scale_fill_gradient2(
     low = "#4575b4", mid = "white", high = "#d73027", midpoint = 1,
     name = "F/M Ratio",
+    guide = guide_colorbar(title.position = "bottom", title.hjust = 0.5),
     limits = c(0.5, 1.5),
     na.value = "grey70"
   ) +
   labs(
     title = "Gender Ratio Heatmap by Age Group and Region (F/M)",
     x = "Region",
-    y = "Age Group"
+    y = "Age Group",caption = "Note: <1 = More Males, >1 = More Females"
   ) +
   theme_minimal() +
   theme(
@@ -700,7 +701,8 @@ P6<-ggplot(df_wide, aes(x = Region, y = fct_rev(Age_Group), fill = SexRatio)) +
     axis.title = element_text(face = "plain"),
     axis.text = element_text(size = 11),
     legend.title = element_text(face = "plain"),
-    legend.position = "bottom"
+    legend.position = "bottom",
+    plot.caption = element_text(hjust = 0, size = 9, face = "italic", color = "black")
   )
 ```
 
