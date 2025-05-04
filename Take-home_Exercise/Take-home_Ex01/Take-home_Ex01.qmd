@@ -118,7 +118,7 @@ As seen in the value "90_and_Over",We need to change it into Numeric for better 
 
 ```{r}
 #| code-fold: true
-#| code-summary: "Code of Binning Numerical Variables"
+#| code-summary: "Code-Binning Numerical Variables"
 S_data <- S_data %>%
   mutate(
     Age = as.character(Age),                            
@@ -160,7 +160,7 @@ S_data <- S_data %>%
 
 ```{r}
 #| code-fold: true
-#| code-summary: "Data preparation for Region"
+#| code-summary: "Code-Data preparation for Region"
 region_map <- tibble::tibble(
   PA = c(
     "Ang Mo Kio", "Bedok", "Bishan", "Bukit Batok", "Bukit Merah",
@@ -219,7 +219,7 @@ df_long_region <- S_data %>%
 
 ```{r}
 #| code-fold: true
-#| code-summary: "Data preparation for Age"
+#| code-summary: "Code-Data preparation for Age"
 
 pyramid_data <- S_data %>%
   group_by(Age_Group, Sex) %>%
@@ -270,7 +270,7 @@ age_levels <- c(
 
 ```{r}
 #| code-fold: true
-#| code-summary: "Data preparation for desnsity"
+#| code-summary: "Code-Data preparation for desnsity"
 
 # Step 1: Clean the Age data with data type transformation
 S_data <- S_data %>%
@@ -295,7 +295,7 @@ density_peaks <- S_long %>%
   ) %>%
   mutate(
     label_text = paste0(Sex, ": ", round(peak_age, 1)),
-    label_y = peak_density + ifelse(Sex == "Males", 0.0006, 0.0009)  # ⬅️ 分开高度
+    label_y = peak_density + ifelse(Sex == "Males", 0.0006, 0.0009)  
   )
 
 # Step 5: Prepare mean_labels for bottom annotation
@@ -303,16 +303,16 @@ mean_labels <- avg_age %>%
   mutate(
     label_text = paste0(round(mean_age, 1)),
     label_y = 0.001,  
-    label_x = ifelse(Sex == "Males", mean_age - 8, mean_age + 5)  # 左右错开
+    label_x = ifelse(Sex == "Males", mean_age - 8, mean_age + 5) 
   )
 
 # Step 4 : Median calculation with cleaning
 df_long_region <- df_long_region %>%
   mutate(
-    Age = ifelse(Age == "90_and_Over", "90", Age),  # 替换文本
-    Age = as.numeric(Age)                           # 转换为数值
+    Age = ifelse(Age == "90_and_Over", "90", Age),  
+    Age = as.numeric(Age)                          
   ) %>%
-  filter(!is.na(Age))  # 过滤掉无法转换的行
+  filter(!is.na(Age))  
 
 median_age <- median(df_long_region$Age)
 df_median <- data.frame(Median = median_age)
@@ -345,7 +345,7 @@ df_region_gender <- df_long_region %>%
 
 ```{r}
 #| code-fold: true
-#| code-summary: "Data preparation for Heatmap"
+#| code-summary: "Code-Data preparation for Heatmap"
 df_sex_ratio <- df_long_region %>%
   filter(!is.na(Sex), !is.na(Age_Group)) %>%
   mutate(Age_Group = factor(Age_Group, levels = age_levels)) 
@@ -372,7 +372,7 @@ df_wide <- df_wide %>%
 
 ```{r}
 #| code-fold: true
-#| code-summary: "Population pyramid "
+#| code-summary: "Code-Population pyramid "
 
 P1 <- ggplot(pyramid_data, aes(x = Age_Group, y = Perc_plot, fill = Sex)) +
   geom_bar(stat = "identity", width = 0.8) +
@@ -405,7 +405,7 @@ P1 <- ggplot(pyramid_data, aes(x = Age_Group, y = Perc_plot, fill = Sex)) +
 
 ```{r message=FALSE}
 #| code-fold: true
-#| code-summary: "Density Plot "
+#| code-summary: "Code-Density Plot "
 
 # Step 6: Plot
 P2 <- ggplot(S_long, aes(x = Age_numeric, fill = Sex, color = Sex)) +
@@ -509,7 +509,7 @@ The reason why choosing **Boxplot** is that it highlights variations in median a
 
 ```{r}
 #| code-fold: true
-#| code-summary: "Boxplot"
+#| code-summary: "Code-Boxplot"
 P3 <- ggplot(df_long_region, aes(x = PA, y = Age)) +
   geom_boxplot(
     fill = "white",
@@ -553,7 +553,7 @@ The reason why choosing **Ridgeline density plot** with ECDF shading is that it 
 #| fig-width: 14
 #| fig-height: 8
 #| code-fold: true
-#| code-summary: "Density Distributions Plot"
+#| code-summary: "Code-Density Distributions Plot"
 
 P4<-ggplot(df_long_region, aes(x = Age, y = PA, fill = 0.5 - abs(0.5 - stat(ecdf)))) +
   stat_density_ridges(
@@ -639,7 +639,7 @@ These visualisations reveal distinct demographic differences between older and n
 
 ```{r}
 #| code-fold: true
-#| code-summary: "Stacked plots"
+#| code-summary: "Code-Stacked plots"
 
 df_region_gender <- df_long_region %>%
   filter(!is.na(Sex), !is.na(Region)) %>%
@@ -678,7 +678,7 @@ The reason why choosing **Heatmap** is that it can identify gender imbalances an
 
 ```{r}
 #| code-fold: true
-#| code-summary: "Heatmap"
+#| code-summary: "Code-Heatmap"
 
 # Step 5: Draw a heat map
 P6<-ggplot(df_wide, aes(x = Region, y = fct_rev(Age_Group), fill = SexRatio)) +

@@ -89,7 +89,8 @@ website:
       - text: "In-class Exercise"
         href: https://public.tableau.com/app/profile/irene.yang2979/vizzes
       - section: "Take-home Exercise"
-        href:  "Take-home_Exercise/Take-home_Ex01/Take-home_Ex01.html"
+        - text: "Hands-on Exercise 1"
+        - href: "Take-home_Exercise/Take-home_Ex01/Take-home_Ex01.html"
           
 format: 
   html:
