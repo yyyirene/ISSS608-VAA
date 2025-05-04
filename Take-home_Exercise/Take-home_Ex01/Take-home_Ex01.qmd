@@ -327,21 +327,21 @@ df_region_gender <- df_long_region %>%
   summarise(n = n(), .groups = "drop")
 ```
 
-**6.4 Data preparation for Interaction between Region × Age Group × Gender:**
+**6.4 Data preparation for** **Multivariate relationship** **between Region × Age Group × Gender:**
 
-**2.Group Data by Region, Age Group, and Gender**
+-   **Group Data by Region, Age Group, and Gender**
 
--   Use `group_by(Region, Age_Group, Sex)` and `summarise()` to count the number of individuals (`Pop`) in each subgroup.
+    Use `group_by(Region, Age_Group, Sex)` and `summarise()` to count the number of individuals (`Pop`) in each subgroup.
 
-**3.Convert to Wide Format**
+-   **Convert to Wide Format**
 
--   Use `pivot_wider()` to restructure the data so that each row contains counts of both `Males` and `Females`, facilitating ratio calculation.
+    Use `pivot_wider()` to restructure the data so that each row contains counts of both `Males` and `Females`, facilitating ratio calculation.
 
--   Fill missing values with `0` to avoid calculation errors.
+    Fill missing values with `0` to avoid calculation errors.
 
-**4.Calculate Female-to-Male Ratio**
+-   **Calculate Female-to-Male Ratio**
 
--   Create a new variable `SexRatio = Females / Males`.
+    Create a new variable `SexRatio = Females / Males`.
 
 ```{r}
 #| code-fold: true

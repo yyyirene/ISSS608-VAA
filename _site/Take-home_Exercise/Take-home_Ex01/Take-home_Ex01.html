@@ -334,8 +334,21 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
   </div>
 </li>
         <li class="sidebar-item sidebar-item-section">
-      <span class="sidebar-item-text sidebar-link text-start">
- <span class="menu-text">Take-home Exercise</span></span>
+      <div class="sidebar-item-container"> 
+            <a href="../../Take-home_Exercise/Take-home_Ex01/Take-home_Ex01.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Take-home Exercise</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Take-home_Exercise/Take-home_Ex01/Take-home_Ex01.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Take-home Exercise 1</span></a>
+  </div>
+</li>
+      </ul>
   </li>
     </ul>
     </div>
@@ -581,7 +594,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
 <p>As seen in the value “90_and_Over”,We need to change it into Numeric for better bin and Create Age_group 19 bins</p>
 <div class="cell">
 <details class="code-fold">
-<summary>Code of Binning Numerical Variables</summary>
+<summary>Code-Binning Numerical Variables</summary>
 <div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a>S_data <span class="ot">&lt;-</span> S_data <span class="sc">%&gt;%</span></span>
 <span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
 <span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">Age =</span> <span class="fu">as.character</span>(Age),                            </span>
@@ -622,7 +635,7 @@ The dataset is expanded using <code>uncount()</code> to generate one row per ind
 </ul>
 <div class="cell">
 <details class="code-fold">
-<summary>Data preparation for Region</summary>
+<summary>Code-Data preparation for Region</summary>
 <div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a>region_map <span class="ot">&lt;-</span> tibble<span class="sc">::</span><span class="fu">tibble</span>(</span>
 <span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">PA =</span> <span class="fu">c</span>(</span>
 <span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a>    <span class="st">"Ang Mo Kio"</span>, <span class="st">"Bedok"</span>, <span class="st">"Bishan"</span>, <span class="st">"Bukit Batok"</span>, <span class="st">"Bukit Merah"</span>,</span>
@@ -674,7 +687,7 @@ The dataset is expanded using <code>uncount()</code> to generate one row per ind
 </ul>
 <div class="cell">
 <details class="code-fold">
-<summary>Data preparation for Age</summary>
+<summary>Code-Data preparation for Age</summary>
 <div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>pyramid_data <span class="ot">&lt;-</span> S_data <span class="sc">%&gt;%</span></span>
 <span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Age_Group, Sex) <span class="sc">%&gt;%</span></span>
 <span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">Population =</span> <span class="fu">sum</span>(Pop), <span class="at">.groups =</span> <span class="st">"drop"</span>) <span class="sc">%&gt;%</span></span>
@@ -716,7 +729,7 @@ The dataset is expanded using <code>uncount()</code> to generate one row per ind
 </ul>
 <div class="cell">
 <details class="code-fold">
-<summary>Data preparation for desnsity</summary>
+<summary>Code-Data preparation for desnsity</summary>
 <div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Step 1: Clean the Age data with data type transformation</span></span>
 <span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>S_data <span class="ot">&lt;-</span> S_data <span class="sc">%&gt;%</span></span>
 <span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Age =</span> <span class="fu">ifelse</span>(Age <span class="sc">==</span> <span class="st">"90_and_Over"</span>, <span class="st">"90"</span>, Age),</span>
@@ -740,7 +753,7 @@ The dataset is expanded using <code>uncount()</code> to generate one row per ind
 <span id="cb16-21"><a href="#cb16-21" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
 <span id="cb16-22"><a href="#cb16-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
 <span id="cb16-23"><a href="#cb16-23" aria-hidden="true" tabindex="-1"></a>    <span class="at">label_text =</span> <span class="fu">paste0</span>(Sex, <span class="st">": "</span>, <span class="fu">round</span>(peak_age, <span class="dv">1</span>)),</span>
-<span id="cb16-24"><a href="#cb16-24" aria-hidden="true" tabindex="-1"></a>    <span class="at">label_y =</span> peak_density <span class="sc">+</span> <span class="fu">ifelse</span>(Sex <span class="sc">==</span> <span class="st">"Males"</span>, <span class="fl">0.0006</span>, <span class="fl">0.0009</span>)  <span class="co"># ⬅️ 分开高度</span></span>
+<span id="cb16-24"><a href="#cb16-24" aria-hidden="true" tabindex="-1"></a>    <span class="at">label_y =</span> peak_density <span class="sc">+</span> <span class="fu">ifelse</span>(Sex <span class="sc">==</span> <span class="st">"Males"</span>, <span class="fl">0.0006</span>, <span class="fl">0.0009</span>)  </span>
 <span id="cb16-25"><a href="#cb16-25" aria-hidden="true" tabindex="-1"></a>  )</span>
 <span id="cb16-26"><a href="#cb16-26" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb16-27"><a href="#cb16-27" aria-hidden="true" tabindex="-1"></a><span class="co"># Step 5: Prepare mean_labels for bottom annotation</span></span>
@@ -748,16 +761,16 @@ The dataset is expanded using <code>uncount()</code> to generate one row per ind
 <span id="cb16-29"><a href="#cb16-29" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
 <span id="cb16-30"><a href="#cb16-30" aria-hidden="true" tabindex="-1"></a>    <span class="at">label_text =</span> <span class="fu">paste0</span>(<span class="fu">round</span>(mean_age, <span class="dv">1</span>)),</span>
 <span id="cb16-31"><a href="#cb16-31" aria-hidden="true" tabindex="-1"></a>    <span class="at">label_y =</span> <span class="fl">0.001</span>,  </span>
-<span id="cb16-32"><a href="#cb16-32" aria-hidden="true" tabindex="-1"></a>    <span class="at">label_x =</span> <span class="fu">ifelse</span>(Sex <span class="sc">==</span> <span class="st">"Males"</span>, mean_age <span class="sc">-</span> <span class="dv">8</span>, mean_age <span class="sc">+</span> <span class="dv">5</span>)  <span class="co"># 左右错开</span></span>
+<span id="cb16-32"><a href="#cb16-32" aria-hidden="true" tabindex="-1"></a>    <span class="at">label_x =</span> <span class="fu">ifelse</span>(Sex <span class="sc">==</span> <span class="st">"Males"</span>, mean_age <span class="sc">-</span> <span class="dv">8</span>, mean_age <span class="sc">+</span> <span class="dv">5</span>) </span>
 <span id="cb16-33"><a href="#cb16-33" aria-hidden="true" tabindex="-1"></a>  )</span>
 <span id="cb16-34"><a href="#cb16-34" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb16-35"><a href="#cb16-35" aria-hidden="true" tabindex="-1"></a><span class="co"># Step 4 : Median calculation with cleaning</span></span>
 <span id="cb16-36"><a href="#cb16-36" aria-hidden="true" tabindex="-1"></a>df_long_region <span class="ot">&lt;-</span> df_long_region <span class="sc">%&gt;%</span></span>
 <span id="cb16-37"><a href="#cb16-37" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(</span>
-<span id="cb16-38"><a href="#cb16-38" aria-hidden="true" tabindex="-1"></a>    <span class="at">Age =</span> <span class="fu">ifelse</span>(Age <span class="sc">==</span> <span class="st">"90_and_Over"</span>, <span class="st">"90"</span>, Age),  <span class="co"># 替换文本</span></span>
-<span id="cb16-39"><a href="#cb16-39" aria-hidden="true" tabindex="-1"></a>    <span class="at">Age =</span> <span class="fu">as.numeric</span>(Age)                           <span class="co"># 转换为数值</span></span>
+<span id="cb16-38"><a href="#cb16-38" aria-hidden="true" tabindex="-1"></a>    <span class="at">Age =</span> <span class="fu">ifelse</span>(Age <span class="sc">==</span> <span class="st">"90_and_Over"</span>, <span class="st">"90"</span>, Age),  </span>
+<span id="cb16-39"><a href="#cb16-39" aria-hidden="true" tabindex="-1"></a>    <span class="at">Age =</span> <span class="fu">as.numeric</span>(Age)                          </span>
 <span id="cb16-40"><a href="#cb16-40" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">%&gt;%</span></span>
-<span id="cb16-41"><a href="#cb16-41" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(Age))  <span class="co"># 过滤掉无法转换的行</span></span>
+<span id="cb16-41"><a href="#cb16-41" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(Age))  </span>
 <span id="cb16-42"><a href="#cb16-42" aria-hidden="true" tabindex="-1"></a></span>
 <span id="cb16-43"><a href="#cb16-43" aria-hidden="true" tabindex="-1"></a>median_age <span class="ot">&lt;-</span> <span class="fu">median</span>(df_long_region<span class="sc">$</span>Age)</span>
 <span id="cb16-44"><a href="#cb16-44" aria-hidden="true" tabindex="-1"></a>df_median <span class="ot">&lt;-</span> <span class="fu">data.frame</span>(<span class="at">Median =</span> median_age)</span>
@@ -772,23 +785,19 @@ The dataset is expanded using <code>uncount()</code> to generate one row per ind
 <span id="cb16-53"><a href="#cb16-53" aria-hidden="true" tabindex="-1"></a>  <span class="fu">summarise</span>(<span class="at">n =</span> <span class="fu">n</span>(), <span class="at">.groups =</span> <span class="st">"drop"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </details>
 </div>
-<p><strong>6.4 Data preparation for Interaction between Region × Age Group × Gender:</strong></p>
-<p><strong>2.Group Data by Region, Age Group, and Gender</strong></p>
+<p><strong>6.4 Data preparation for</strong> <strong>Multivariate relationship</strong> <strong>between Region × Age Group × Gender:</strong></p>
 <ul>
-<li>Use <code>group_by(Region, Age_Group, Sex)</code> and <code>summarise()</code> to count the number of individuals (<code>Pop</code>) in each subgroup.</li>
-</ul>
-<p><strong>3.Convert to Wide Format</strong></p>
-<ul>
-<li><p>Use <code>pivot_wider()</code> to restructure the data so that each row contains counts of both <code>Males</code> and <code>Females</code>, facilitating ratio calculation.</p></li>
-<li><p>Fill missing values with <code>0</code> to avoid calculation errors.</p></li>
-</ul>
-<p><strong>4.Calculate Female-to-Male Ratio</strong></p>
-<ul>
-<li>Create a new variable <code>SexRatio = Females / Males</code>.</li>
+<li><p><strong>Group Data by Region, Age Group, and Gender</strong></p>
+<p>Use <code>group_by(Region, Age_Group, Sex)</code> and <code>summarise()</code> to count the number of individuals (<code>Pop</code>) in each subgroup.</p></li>
+<li><p><strong>Convert to Wide Format</strong></p>
+<p>Use <code>pivot_wider()</code> to restructure the data so that each row contains counts of both <code>Males</code> and <code>Females</code>, facilitating ratio calculation.</p>
+<p>Fill missing values with <code>0</code> to avoid calculation errors.</p></li>
+<li><p><strong>Calculate Female-to-Male Ratio</strong></p>
+<p>Create a new variable <code>SexRatio = Females / Males</code>.</p></li>
 </ul>
 <div class="cell">
 <details class="code-fold">
-<summary>Data preparation for Heatmap</summary>
+<summary>Code-Data preparation for Heatmap</summary>
 <div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a>df_sex_ratio <span class="ot">&lt;-</span> df_long_region <span class="sc">%&gt;%</span></span>
 <span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(Sex), <span class="sc">!</span><span class="fu">is.na</span>(Age_Group)) <span class="sc">%&gt;%</span></span>
 <span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">mutate</span>(<span class="at">Age_Group =</span> <span class="fu">factor</span>(Age_Group, <span class="at">levels =</span> age_levels)) </span>
@@ -816,7 +825,7 @@ The dataset is expanded using <code>uncount()</code> to generate one row per ind
 <p>1.1 <strong>Population pyramid</strong> using gender and age group information from <code>S_data</code>.And it shows the structural proportion of each group</p>
 <div class="cell">
 <details class="code-fold">
-<summary>Population pyramid</summary>
+<summary>Code-Population pyramid</summary>
 <div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a>P1 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(pyramid_data, <span class="fu">aes</span>(<span class="at">x =</span> Age_Group, <span class="at">y =</span> Perc_plot, <span class="at">fill =</span> Sex)) <span class="sc">+</span></span>
 <span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_bar</span>(<span class="at">stat =</span> <span class="st">"identity"</span>, <span class="at">width =</span> <span class="fl">0.8</span>) <span class="sc">+</span></span>
 <span id="cb18-3"><a href="#cb18-3" aria-hidden="true" tabindex="-1"></a>  </span>
@@ -847,7 +856,7 @@ The dataset is expanded using <code>uncount()</code> to generate one row per ind
 <p>1.2 <strong>Density Plot</strong> highlights where the population is most concentrated</p>
 <div class="cell">
 <details class="code-fold">
-<summary>Density Plot</summary>
+<summary>Code-Density Plot</summary>
 <div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Step 6: Plot</span></span>
 <span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>P2 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(S_long, <span class="fu">aes</span>(<span class="at">x =</span> Age_numeric, <span class="at">fill =</span> Sex, <span class="at">color =</span> Sex)) <span class="sc">+</span></span>
 <span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_density</span>(<span class="at">alpha =</span> <span class="fl">0.4</span>, <span class="at">size =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
@@ -937,7 +946,7 @@ The dataset is expanded using <code>uncount()</code> to generate one row per ind
 <p>The reason why choosing <strong>Boxplot</strong> is that it highlights variations in median age and age spread and helps identify areas with younger or older populations relative to the national median,supporting demographic insights for targeted policy and planning.</p>
 <div class="cell">
 <details class="code-fold">
-<summary>Boxplot</summary>
+<summary>Code-Boxplot</summary>
 <div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a>P3 <span class="ot">&lt;-</span> <span class="fu">ggplot</span>(df_long_region, <span class="fu">aes</span>(<span class="at">x =</span> PA, <span class="at">y =</span> Age)) <span class="sc">+</span></span>
 <span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_boxplot</span>(</span>
 <span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">fill =</span> <span class="st">"white"</span>,</span>
@@ -978,7 +987,7 @@ The dataset is expanded using <code>uncount()</code> to generate one row per ind
 <p>The reason why choosing <strong>Ridgeline density plot</strong> with ECDF shading is that it can highlight where population age is most concentrated and emphasizes core age groups within each area.</p>
 <div class="cell">
 <details class="code-fold">
-<summary>Density Distributions Plot</summary>
+<summary>Code-Density Distributions Plot</summary>
 <div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>P4<span class="ot">&lt;-</span><span class="fu">ggplot</span>(df_long_region, <span class="fu">aes</span>(<span class="at">x =</span> Age, <span class="at">y =</span> PA, <span class="at">fill =</span> <span class="fl">0.5</span> <span class="sc">-</span> <span class="fu">abs</span>(<span class="fl">0.5</span> <span class="sc">-</span> <span class="fu">stat</span>(ecdf)))) <span class="sc">+</span></span>
 <span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">stat_density_ridges</span>(</span>
 <span id="cb22-3"><a href="#cb22-3" aria-hidden="true" tabindex="-1"></a>    <span class="at">geom =</span> <span class="st">"density_ridges_gradient"</span>,</span>
@@ -1061,7 +1070,7 @@ The dataset is expanded using <code>uncount()</code> to generate one row per ind
 <p><strong>Stacked plots</strong> ：To provide a clear overview of the total population breakdown by gender (Males vs.&nbsp;Females) across Singapore’s four regions (East, North, South, West)</p>
 <div class="cell">
 <details class="code-fold">
-<summary>Stacked plots</summary>
+<summary>Code-Stacked plots</summary>
 <div class="sourceCode cell-code" id="cb24"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb24-1"><a href="#cb24-1" aria-hidden="true" tabindex="-1"></a>df_region_gender <span class="ot">&lt;-</span> df_long_region <span class="sc">%&gt;%</span></span>
 <span id="cb24-2"><a href="#cb24-2" aria-hidden="true" tabindex="-1"></a>  <span class="fu">filter</span>(<span class="sc">!</span><span class="fu">is.na</span>(Sex), <span class="sc">!</span><span class="fu">is.na</span>(Region)) <span class="sc">%&gt;%</span></span>
 <span id="cb24-3"><a href="#cb24-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">group_by</span>(Region, Sex) <span class="sc">%&gt;%</span></span>
@@ -1098,7 +1107,7 @@ The dataset is expanded using <code>uncount()</code> to generate one row per ind
 <p>The reason why choosing <strong>Heatmap</strong> is that it can identify gender imbalances and demographic aging patterns across Singapore.The color gradient can show whether there are more women than men (red) or vice versa (blue) across age groups and regions.</p>
 <div class="cell">
 <details class="code-fold">
-<summary>Heatmap</summary>
+<summary>Code-Heatmap</summary>
 <div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Step 5: Draw a heat map</span></span>
 <span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>P6<span class="ot">&lt;-</span><span class="fu">ggplot</span>(df_wide, <span class="fu">aes</span>(<span class="at">x =</span> Region, <span class="at">y =</span> <span class="fu">fct_rev</span>(Age_Group), <span class="at">fill =</span> SexRatio)) <span class="sc">+</span></span>
 <span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a>  <span class="fu">geom_tile</span>(<span class="at">color =</span> <span class="st">"white"</span>) <span class="sc">+</span></span>
