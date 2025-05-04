@@ -58,7 +58,7 @@ website:
       - text: "Take-home Exercise"
         menu:
           - text: "Take home exercise 1"
-            href: "Take_home_Ex/Take_home_Ex01/Take_home_Ex01.html"
+            href: "Take-home_Exercise/Take-home_Ex01/Take-home_Ex01.html"
           - text: "Take home exercise 2"
             href: "Take_home_Ex/Take_home_Ex02/Take_home_Ex02.html"
           - text: "Take home exercise 3"
@@ -88,6 +88,8 @@ website:
             href: "Hands-on_Ex/Hands_on_Ex03/Hands-on_Ex03B.html"
       - text: "In-class Exercise"
         href: https://public.tableau.com/app/profile/irene.yang2979/vizzes
+      - section: "Take-home Exercise"
+        href:  "Take-home_Exercise/Take-home_Ex01/Take-home_Ex01.html"
           
 format: 
   html:
