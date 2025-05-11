@@ -529,7 +529,7 @@ P3 <- ggplot(df_long_region, aes(x = PA, y = Age)) +
   scale_color_manual(
     name = NULL,
     values = c("Median" = "red"),
-    labels = c("Median" = paste0("Median = ", median_age))
+    labels = c("Median" = paste0("National Median = ", median_age))
   ) +
   facet_wrap(~ Region, scales = "free_x", ncol = 4, nrow = 1) +
   labs(

@@ -113,7 +113,7 @@ knitr::kable(head(my_sum), format = 'html')
 Now we are ready to plot the standard error bars of mean maths score by race as shown below.
 
 ::: panel-tabset
-## The plot 
+## The plot
 
 ```{r echo=FALSE}
 ggplot(my_sum) +
@@ -436,6 +436,8 @@ exam %>%
 ```{R eval=FALSE }
 devtools::install_github("wilkelab/ungeviz")
 ```
+
+Only do it once.
 
 ### 11.5.2 Launch the application in R
 

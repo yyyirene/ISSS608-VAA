@@ -233,11 +233,11 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <ul class="dropdown-menu" aria-labelledby="nav-menu-take-home-exercise">    
         <li>
     <a class="dropdown-item" href="../../Take-home_Exercise/Take-home_Ex01/Take-home_Ex01.html">
- <span class="dropdown-text">Take home exercise 1</span></a>
+ <span class="dropdown-text">Take home exercise 1A</span></a>
   </li>  
         <li>
-    <a class="dropdown-item" href="../../Take_home_Ex/Take_home_Ex02/Take_home_Ex02.html">
- <span class="dropdown-text">Take home exercise 2</span></a>
+    <a class="dropdown-item" href="../../Take-home_Exercise/Take-home_Ex01/Take-home_Ex01B.html">
+ <span class="dropdown-text">Take home exercise 1B</span></a>
   </li>  
         <li>
     <a class="dropdown-item" href="../../Take_home_Ex/Take_home_Ex03/Take_home_Ex03.html">
@@ -369,7 +369,13 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
           <li class="sidebar-item">
   <div class="sidebar-item-container"> 
   <a href="../../Take-home_Exercise/Take-home_Ex01/Take-home_Ex01.html" class="sidebar-item-text sidebar-link active">
- <span class="menu-text">Take-home Exercise 1</span></a>
+ <span class="menu-text">Take-home Exercise 1A</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../Take-home_Exercise/Take-home_Ex01/Take-home_Ex01B.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Take-home Exercise 1B</span></a>
   </div>
 </li>
       </ul>
@@ -445,7 +451,7 @@ pre > code.sourceCode > span > a:first-child::before { text-decoration: underlin
     <div>
     <div class="quarto-title-meta-heading">Modified</div>
     <div class="quarto-title-meta-contents">
-      <p class="date-modified">May 4, 2025</p>
+      <p class="date-modified">May 11, 2025</p>
     </div>
   </div>
     
@@ -990,7 +996,7 @@ The dataset is expanded using <code>uncount()</code> to generate one row per ind
 <span id="cb21-17"><a href="#cb21-17" aria-hidden="true" tabindex="-1"></a>  <span class="fu">scale_color_manual</span>(</span>
 <span id="cb21-18"><a href="#cb21-18" aria-hidden="true" tabindex="-1"></a>    <span class="at">name =</span> <span class="cn">NULL</span>,</span>
 <span id="cb21-19"><a href="#cb21-19" aria-hidden="true" tabindex="-1"></a>    <span class="at">values =</span> <span class="fu">c</span>(<span class="st">"Median"</span> <span class="ot">=</span> <span class="st">"red"</span>),</span>
-<span id="cb21-20"><a href="#cb21-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"Median"</span> <span class="ot">=</span> <span class="fu">paste0</span>(<span class="st">"Median = "</span>, median_age))</span>
+<span id="cb21-20"><a href="#cb21-20" aria-hidden="true" tabindex="-1"></a>    <span class="at">labels =</span> <span class="fu">c</span>(<span class="st">"Median"</span> <span class="ot">=</span> <span class="fu">paste0</span>(<span class="st">"National Median = "</span>, median_age))</span>
 <span id="cb21-21"><a href="#cb21-21" aria-hidden="true" tabindex="-1"></a>  ) <span class="sc">+</span></span>
 <span id="cb21-22"><a href="#cb21-22" aria-hidden="true" tabindex="-1"></a>  <span class="fu">facet_wrap</span>(<span class="sc">~</span> Region, <span class="at">scales =</span> <span class="st">"free_x"</span>, <span class="at">ncol =</span> <span class="dv">4</span>, <span class="at">nrow =</span> <span class="dv">1</span>) <span class="sc">+</span></span>
 <span id="cb21-23"><a href="#cb21-23" aria-hidden="true" tabindex="-1"></a>  <span class="fu">labs</span>(</span>

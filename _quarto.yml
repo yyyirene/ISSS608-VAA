@@ -57,10 +57,10 @@ website:
 
       - text: "Take-home Exercise"
         menu:
-          - text: "Take home exercise 1"
+          - text: "Take home exercise 1A"
             href: "Take-home_Exercise/Take-home_Ex01/Take-home_Ex01.html"
-          - text: "Take home exercise 2"
-            href: "Take_home_Ex/Take_home_Ex02/Take_home_Ex02.html"
+          - text: "Take home exercise 1B"
+            href: "Take-home_Exercise/Take-home_Ex01/Take-home_Ex01B.html"
           - text: "Take home exercise 3"
             href: "Take_home_Ex/Take_home_Ex03/Take_home_Ex03.html"
 
@@ -99,8 +99,10 @@ website:
       - section: "Take-home Exercise"
         href: "Take-home_Exercise/Take-home_Ex01/Take-home_Ex01.html"
         contents:
-          - text: "Take-home Exercise 1"
+          - text: "Take-home Exercise 1A"
             href: "Take-home_Exercise/Take-home_Ex01/Take-home_Ex01.html"
+          - text: "Take-home Exercise 1B"
+            href: "Take-home_Exercise/Take-home_Ex01/Take-home_Ex01B.html"
           
 format: 
   html:

@@ -100,7 +100,37 @@ ggbetweenstats(
 )
 ```
 
+This one is showing median.
+
 Default information: - statistical details - Bayes Factor - sample sizes - distribution summary
+
+```{r}
+ggbetweenstats(
+  data = exam,
+  x = GENDER, 
+  y = MATHS,
+  type = "p",
+  messages = FALSE
+)
+```
+
+This will show mean value.
+
+```{r}
+ggbetweenstats(
+  data = exam,
+  x = GENDER, 
+  y = MATHS,
+  type = "r",
+  messages = FALSE
+)
+```
+
+This plot has remove the outliers.
+
+::: callout-note
+If you need show the statistic information,it would better advise to use ggstatsplot instead of ggplot2.
+:::
 
 ### 10.3.7 Oneway ANOVA Test: *ggbetweenstats()* method
 
@@ -145,6 +175,15 @@ ggscatterstats(
   )
 ```
 
+```{r}
+ggscatterstats(
+  data = exam,
+  x = MATHS,
+  y = ENGLISH,
+  marginal = True,
+  )
+```
+
 ### 10.3.9 Significant Test of Association (Depedence) : *ggbarstats()* methods
 
 In the code chunk below, the Maths scores is binned into a 4-class variable by using [*cut()*](https://www.rdocumentation.org/packages/base/versions/3.6.2/topics/cut).
@@ -165,3 +204,5 @@ ggbarstats(exam1,
            x = MATHS_bins, 
            y = GENDER)
 ```
+
+Compare with the DAL mosaic plot,
