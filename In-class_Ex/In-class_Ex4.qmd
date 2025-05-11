@@ -1,0 +1,106 @@
+---
+title: "In-class Ex4"
+author: "yang yayong"
+date: "May 10 2025"
+execute:
+  eval: true
+  echo: true
+  message: false
+  freeze: true
+  warning: FALSE
+---
+
+The `ggstatsplot` package offers a convenient way to generate various types of plots by adjusting a few parameters.
+
+Basic plots are effective for exploratory analysis and initial insights, whereas statistically enriched plots are valuable for drawing conclusions and supporting scientific reasoning.
+
+```{r}
+pacman::p_load(ggstatsplot, tidyverse)
+```
+
+```{r}
+exam <- read_csv("data/Exam_data.csv")
+```
+
+### Two-sample mean test: *ggbetweenstats()*
+
+For example changing the type from
+
+np : This one is showing median.
+
+p : This will show mean value.
+
+r : This plot has remove the outliers.
+
+```{r}
+ggbetweenstats(
+  data = exam,
+  x = GENDER, 
+  y = MATHS,
+  type = "np",
+  messages = FALSE
+)
+```
+
+```{r}
+ggbetweenstats(
+  data = exam,
+  x = GENDER, 
+  y = MATHS,
+  type = "p",
+  messages = FALSE
+)
+```
+
+```{r}
+ggbetweenstats(
+  data = exam,
+  x = GENDER, 
+  y = MATHS,
+  type = "r",
+  messages = FALSE
+)
+```
+
+::: callout-note
+If you need show the statistic information,it would better advise to use ggstatsplot instead of ggplot2.
+:::
+
+The difference between marginal = FALSE and marginal = TRUE
+
+```{r}
+ggscatterstats(
+  data = exam,
+  x = MATHS,
+  y = ENGLISH,
+  marginal = FALSE,
+  )
+```
+
+```{R}
+ggscatterstats(
+  data = exam,
+  x = MATHS,
+  y = ENGLISH,
+  marginal = TRUE,
+  )
+```
+
+Compare to what we learn from DAL mosaic plot and the plot belowed:
+
+```{r}
+exam1 <- exam %>% 
+  mutate(MATHS_bins = 
+           cut(MATHS, 
+               breaks = c(0,60,75,85,100))
+)
+
+```
+
+```{r}
+ggbarstats(exam1, 
+           x = MATHS_bins, 
+           y = GENDER)
+```
+
+The one can reflect the insights for Significant Test of Association within the target group

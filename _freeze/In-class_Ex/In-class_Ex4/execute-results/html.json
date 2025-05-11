@@ -1,0 +1,17 @@
+{
+  "hash": "82ce2ea2f2911b6441e63cdd50650499",
+  "result": {
+    "engine": "knitr",
+    "markdown": "---\ntitle: \"In-class Ex4\"\nauthor: \"yang yayong\"\ndate: \"May 10 2025\"\nexecute:\n  eval: true\n  echo: true\n  message: false\n  freeze: true\n  warning: FALSE\n---\n\n\n\nThe `ggstatsplot` package offers a convenient way to generate various types of plots by adjusting a few parameters.\n\nBasic plots are effective for exploratory analysis and initial insights, whereas statistically enriched plots are valuable for drawing conclusions and supporting scientific reasoning.\n\n\n\n::: {.cell}\n\n```{.r .cell-code}\npacman::p_load(ggstatsplot, tidyverse)\n```\n:::\n\n::: {.cell}\n\n```{.r .cell-code}\nexam <- read_csv(\"data/Exam_data.csv\")\n```\n:::\n\n\n\n### Two-sample mean test: *ggbetweenstats()*\n\nFor example changing the type from\n\nnp : This one is showing median.\n\np : This will show mean value.\n\nr : This plot has remove the outliers.\n\n\n\n::: {.cell}\n\n```{.r .cell-code}\nggbetweenstats(\n  data = exam,\n  x = GENDER, \n  y = MATHS,\n  type = \"np\",\n  messages = FALSE\n)\n```\n\n::: {.cell-output-display}\n![](In-class_Ex4_files/figure-html/unnamed-chunk-3-1.png){width=672}\n:::\n:::\n\n::: {.cell}\n\n```{.r .cell-code}\nggbetweenstats(\n  data = exam,\n  x = GENDER, \n  y = MATHS,\n  type = \"p\",\n  messages = FALSE\n)\n```\n\n::: {.cell-output-display}\n![](In-class_Ex4_files/figure-html/unnamed-chunk-4-1.png){width=672}\n:::\n:::\n\n::: {.cell}\n\n```{.r .cell-code}\nggbetweenstats(\n  data = exam,\n  x = GENDER, \n  y = MATHS,\n  type = \"r\",\n  messages = FALSE\n)\n```\n\n::: {.cell-output-display}\n![](In-class_Ex4_files/figure-html/unnamed-chunk-5-1.png){width=672}\n:::\n:::\n\n\n\n::: callout-note\nIf you need show the statistic information,it would better advise to use ggstatsplot instead of ggplot2.\n:::\n\nThe difference between marginal = FALSE and marginal = TRUE\n\n\n\n::: {.cell}\n\n```{.r .cell-code}\nggscatterstats(\n  data = exam,\n  x = MATHS,\n  y = ENGLISH,\n  marginal = FALSE,\n  )\n```\n\n::: {.cell-output-display}\n![](In-class_Ex4_files/figure-html/unnamed-chunk-6-1.png){width=672}\n:::\n:::\n\n::: {.cell}\n\n```{.r .cell-code}\nggscatterstats(\n  data = exam,\n  x = MATHS,\n  y = ENGLISH,\n  marginal = TRUE,\n  )\n```\n\n::: {.cell-output-display}\n![](In-class_Ex4_files/figure-html/unnamed-chunk-7-1.png){width=672}\n:::\n:::\n\n\n\nCompare to what we learn from DAL mosaic plot and the plot belowed:\n\n\n\n::: {.cell}\n\n```{.r .cell-code}\nexam1 <- exam %>% \n  mutate(MATHS_bins = \n           cut(MATHS, \n               breaks = c(0,60,75,85,100))\n)\n```\n:::\n\n::: {.cell}\n\n```{.r .cell-code}\nggbarstats(exam1, \n           x = MATHS_bins, \n           y = GENDER)\n```\n\n::: {.cell-output-display}\n![](In-class_Ex4_files/figure-html/unnamed-chunk-9-1.png){width=672}\n:::\n:::\n\n\n\nThe one can reflect the insights for Significant Test of Association within the target group\n",
+    "supporting": [
+      "In-class_Ex4_files"
+    ],
+    "filters": [
+      "rmarkdown/pagebreak.lua"
+    ],
+    "includes": {},
+    "engineDependencies": {},
+    "preserve": {},
+    "postProcess": true
+  }
+}

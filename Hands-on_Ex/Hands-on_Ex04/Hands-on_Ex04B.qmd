@@ -180,7 +180,7 @@ ggscatterstats(
   data = exam,
   x = MATHS,
   y = ENGLISH,
-  marginal = True,
+  marginal = TRUE,
   )
 ```
 
@@ -205,4 +205,4 @@ ggbarstats(exam1,
            y = GENDER)
 ```
 
-Compare with the DAL mosaic plot,
+Compare with the DAL mosaic plot
