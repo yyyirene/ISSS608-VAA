@@ -514,7 +514,7 @@ GAStech_edges_aggregated <- GAStech_edges %>%
 
 The code chunk below will be used to plot an interactive network graph by using the data prepared.
 
-```{r eval=FALSE }
+```{r results='hide' }
 visNetwork(GAStech_nodes, 
            GAStech_edges_aggregated)
 ```
