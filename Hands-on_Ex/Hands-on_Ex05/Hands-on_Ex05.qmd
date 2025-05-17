@@ -90,7 +90,7 @@ GAStech_edges <- GAStech_edges %>%
 -   the values in the *Weekday* field are in ordinal scale.
 :::
 
-###  Reviewing the revised date fields
+### Reviewing the revised date fields
 
 Table below shows the data structure of the reformatted *GAStech_edges* data frame
 
@@ -170,7 +170,7 @@ Two functions of **tidygraph** package can be used to create network objects, th
 
 -   In the above the *.N()* function is used to gain access to the node data while manipulating the edge data. Similarly *.E()* will give you the edge data and *.G()* will give you the **tbl_graph** object itself.
 
-###  **Using `tbl_graph()` to build tidygraph data model.**
+### **Using `tbl_graph()` to build tidygraph data model.**
 
 In this section, we will use `tbl_graph()` of **tinygraph** package to build an tidygraph’s network graph data.frame.
 
@@ -196,7 +196,7 @@ GAStech_graph
 
 -   It states that the Node Data is **active**. The notion of an active tibble within a tbl_graph object makes it possible to manipulate the data in one tibble at a time.
 
-###  Changing the active object
+### Changing the active object
 
 The nodes tibble data frame is activated by default, but you can change which tibble data frame is active with the *activate()* function. Thus, if we wanted to rearrange the rows in the edges tibble to list those with the highest “weight” first, we could use *activate()* and then *arrange()*.
 
@@ -364,7 +364,7 @@ g <- ggraph(GAStech_graph,
 g + facet_edges(~Weekday)
 ```
 
-###  Working with *facet_edges()*
+### Working with *facet_edges()*
 
 ```{r}
 set_graph_style()
@@ -537,7 +537,7 @@ visOptions(highlightNearest = list(enabled = T, hover = T),
              nodesIdSelection = T)
 ```
 
-###  Working with visual attributes - Nodes
+### Working with visual attributes - Nodes
 
 visNetwork() looks for a field called “group” in the nodes object and colour the nodes according to the values of the group field.
 
