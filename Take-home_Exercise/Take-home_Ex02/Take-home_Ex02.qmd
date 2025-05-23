@@ -1,0 +1,12 @@
+---
+title: "Take Home Exercise 2"
+author: "yang yayong"
+date: "May 21 2025"
+date-modified: "last-modified"
+execute:
+  eval: true
+  echo: true
+  message: false
+  freeze: true
+  warning: FALSE
+---
