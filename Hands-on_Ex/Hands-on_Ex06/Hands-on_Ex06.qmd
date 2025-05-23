@@ -316,12 +316,14 @@ ggplot() +
              linetype=6, 
              colour="red", 
              size=0.5) + 
-  facet_grid(~month) +
+  facet_wrap(~month, ncol = 12)
   labs(axis.text.x = element_blank(),
        title = "Visitor arrivals from Vietnam by air, Jan 2010-Dec 2019") +
   xlab("") +
   ylab("No. of Visitors") +
-  theme_tufte(base_family = "Helvetica")
+  theme_tufte(base_family = "Helvetica") +
+theme(axis.text.x = element_blank())
+
 ```
 
 ## Plotting Slopegraph
