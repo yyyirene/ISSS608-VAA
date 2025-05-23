@@ -303,8 +303,7 @@ hline.data <- Vietnam %>%
 
 The code chunk below is used to plot the cycle plot as shown in Slide 12/23.
 
-```{r eval=FALSE }
-
+```{r  }
 ggplot() + 
   geom_line(data=Vietnam,
             aes(x=year, 
@@ -316,14 +315,21 @@ ggplot() +
              linetype=6, 
              colour="red", 
              size=0.5) + 
-  facet_wrap(~month, ncol = 12)
+  facet_grid(~month) +
   labs(axis.text.x = element_blank(),
        title = "Visitor arrivals from Vietnam by air, Jan 2010-Dec 2019") +
   xlab("") +
   ylab("No. of Visitors") +
-  theme_tufte(base_family = "Helvetica") +
-theme(axis.text.x = element_blank())
-
+  #theme_tufte(base_family = "Helvetica")
+  theme_minimal(base_family = "Helvetica") +
+theme(
+  panel.grid.major = element_line(color = "white"),     
+  panel.grid.minor = element_blank(),                   
+  panel.background = element_rect(fill = "gray90"),     
+  strip.background = element_rect(fill = "gray70"),     
+  plot.title = element_text(hjust = 0, face = "bold"),  
+  axis.text.x = element_text(angle = 90, hjust = 1)     
+)
 ```
 
 ## Plotting Slopegraph
