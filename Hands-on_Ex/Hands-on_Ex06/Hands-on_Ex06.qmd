@@ -133,7 +133,7 @@ Table below shows the tidy tibble table after processing.
 kable(head(attacks))
 ```
 
-###  Building the Calendar Heatmaps
+### Building the Calendar Heatmaps
 
 ```{r}
 grouped <- attacks %>% 
@@ -346,7 +346,7 @@ Import the rice data set into R environment by using the code chunk below.
 rice <- read_csv("data/rice.csv")
 ```
 
-###  Step 2: Plotting the slopegraph
+### Step 2: Plotting the slopegraph
 
 Next, code chunk below will be used to plot a basic slopegraph as shown below.
 
