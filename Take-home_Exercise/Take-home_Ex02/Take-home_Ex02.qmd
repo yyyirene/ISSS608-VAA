@@ -110,7 +110,7 @@ In the code chunk below `str()` is used to reveal the structure of *kg* object.
 str(kg, max.level = 1)
 ```
 
-## **Extracting the edges and nodes tables**
+## Extracting the edges and nodes tables
 
 Next, `as_tibble()` of **tibble** package package is used to **extract the nodes and links tibble data frames** from *kg* object into two separate tibble data frames called *nodes_tbl* and *edges_tbl* respectively.
 
@@ -119,7 +119,7 @@ nodes_tbl <- as_tibble(kg$nodes)
 edges_tbl <- as_tibble(kg$links) 
 ```
 
-### **Initial EDA**
+### Initial EDA
 
 It is time for us to apply appropriate EDA methods to examine the data.
 
@@ -200,9 +200,9 @@ edges_tbl %>%
 
 On the other hands, code chunk below uses ggplot2 functions to reveal the frequency distribution of *Node Type* field of *nodes_tbl*.
 
-## **Creating Knowledge Graph**
+## Creating Knowledge Graph
 
-### **Mapping from node id to row index**
+### Mapping from node id to row index
 
 Before we can go ahead to build the tidygraph object, it is important for us to ensures each id from the node list is mapped to the correct row number. This requirement can be achive by using the code chunk below.
 
@@ -230,7 +230,7 @@ edges_tbl <- edges_tbl %>%
 To better understand the changes before and after the process, it is to take a screenshot of *edges_tbl* before and after this process and examine the differences.
 :::
 
-![](images/clipboard-2426498860.png){width="266"}
+![](images/clipboard-2426498860.png){width="351"}
 
 ![](images/clipboard-3714188848.png){width="351"}
 
@@ -276,7 +276,7 @@ of_edges_full %>%
   count(`Edge Type`, from_type)
 ```
 
-### **Filter out any unmatched (invalid) edges**
+### Filter out any unmatched (invalid) edges
 
 Lastly, the code chunk below will be used to exclude the unmatch edges.
 
@@ -285,7 +285,7 @@ edges_tbl <- edges_tbl %>%
   filter(!is.na(from), !is.na(to))
 ```
 
-### **Creating tidygraph**
+### Creating tidygraph
 
 Lastly, `tbl_graph()` is used to create tidygraph’s graph object by using the code chunk below.
 
@@ -305,7 +305,7 @@ You might want to confirm the output object is indeed in tidygraph format by usi
 class(graph)
 ```
 
-## **Visualising the knowledge graph**
+## Visualising the knowledge graph
 
 In this section, we will use ggraph’s functions to visualise and analyse the graph object.
 
@@ -446,8 +446,9 @@ Sailor Shift--\> work \<-- Person
 
 Sailor Shift--\> work_s \<--work_p \<-- Person
 
-```{r echo=FALSE}
-library(DiagrammeR)
+```{r eval=FALSE}
+#| code-fold: true
+#| code-summary: "Who has she been most influenced by over time?"
 
 grViz("
 digraph complex_influence {
@@ -476,6 +477,8 @@ digraph complex_influence {
 
 ```
 
+![](images/clipboard-3878243445.png)
+
 2.  **Who has she collaborated with and directly or indirectly influenced?**
 
 To address the second question, we examined both direct and indirect influences involving Sailor Shift, placing her at the center of the analysis.The process was divided into three main steps:
@@ -484,7 +487,10 @@ To address the second question, we examined both direct and indirect influences 
 
 Sailor Shift--\>work \<-- Person
 
-```{r echo=FALSE}
+```{r eval=FALSE}
+#| code-fold: true
+#| code-summary: "Who has she collaborated with and directly or indirectly influenced?"
+
 grViz("
 digraph sailor_collab {
   graph [layout = dot, rankdir = LR]
@@ -506,14 +512,17 @@ digraph sailor_collab {
  
 ```
 
-\
+![](images/clipboard-42460967.png){width="696"}\
 **2.2** Determine who she has directly or indirectly influenced
 
 Sailor Shift--\>Person --\> work (direct)
 
 Sailor Shift--\>work --\>Person (indirect)
 
-```{r echo=FALSE}
+```{r eval=FALSE}
+#| code-fold: true
+#| code-summary: "Determine who she has directly or indirectly influenced"
+ 
 grViz("
 digraph sailor_influence {
   graph [layout = dot, rankdir = LR]
@@ -541,11 +550,16 @@ digraph sailor_influence {
 
 ```
 
+![](images/clipboard-2688711872.png)
+
 3.How has she influenced collaborators of the broader Oceanus Folk community?
 
 Sailor Shift--\>Person/community(Oceanus Folk)--\>Work(Oceanus Folk)
 
-```{r echo=FALSE}
+```{r eval=FALSE}
+#| code-fold: true
+#| code-summary: "How has she influenced collaborators of the broader Oceanus Folk community?"
+
 grViz("
 digraph oceanus_influence {
   graph [layout = dot, rankdir = LR]
@@ -567,6 +581,8 @@ digraph oceanus_influence {
 
 ```
 
+![](images/clipboard-3868416711.png)
+
 ::: callout-caution
 It is important to be especially careful with the direction of relationships such as **"PerformerOf," "ComposerOf," "LyricistOf," "ProducerOf,"** as well as **"DirectlySamples," "InStyleOf," "CoverOf," "InterpolatesFrom,"** and **"LyricalReferenceTo."**\
 
@@ -575,7 +591,7 @@ Special attention must be paid to accurately identifying the **source** and **ta
 
 ## Let’s begin.
 
-### Who has she been most influenced by over time?
+### **1.Who has she been most influenced by over time?**
 
 Sailor Shift \<--Person
 
@@ -585,7 +601,9 @@ Sailor Shift--\> work_s \<--work_p \<-- Person
 
 From the initial (though imperfect) visNetwork visualization, we first examined what she had produced, and then proceeded to explore further connections.
 
-```{r }
+```{r}
+#| code-fold: true
+#| code-summary: "First examined what she had produced"
 
 subgraph_in <- extract_subnetwork(
   graph, 
@@ -658,7 +676,8 @@ edges_1st_full_named <- edges_1st %>%
   
   select(from, `From Type`, to, `To Type`, `Edge Type`, `To Release`, `To Genre`, `To Notable`, `To Notoriety Date`)
 
-print(edges_1st_full_named)
+knitr::kable(head(edges_1st_full_named, 6))
+
 ```
 
 Below is all the information on the **First** layer, and then remove if there is no other influenced layer
@@ -671,7 +690,9 @@ selected_types <- c("DirectlySamples")
 
 edges_selected <- edges_1st_full_named %>%
   filter(`Edge Type` %in% selected_types)
-edges_selected
+
+knitr::kable(head(edges_selected, 6))
+
 ```
 
 ## InStyleOf \#
@@ -681,7 +702,8 @@ selected_types <- c("InStyleOf")
 
 edges_selected <- edges_1st_full_named %>%
   filter(`Edge Type` %in% selected_types)
-edges_selected
+
+knitr::kable(head(edges_selected, 6))
 ```
 
 ## LyricalReferenceTo \#
@@ -691,7 +713,8 @@ selected_types <- c("LyricalReferenceTo")
 
 edges_selected <- edges_1st_full_named %>%
   filter(`Edge Type` %in% selected_types)
-edges_selected
+
+knitr::kable(head(selected_types, 6))
 ```
 
 ## LyricistOf
@@ -701,7 +724,8 @@ selected_types <- c("LyricistOf")
 
 edges_selected <- edges_1st_full_named %>%
   filter(`Edge Type` %in% selected_types)
-edges_selected
+
+knitr::kable(head(edges_selected, 6))
 ```
 
 ## MemberOf \#
@@ -711,7 +735,8 @@ selected_types <- c("MemberOf")
 
 edges_selected <- edges_1st_full_named %>%
   filter(`Edge Type` %in% selected_types)
-edges_selected
+
+knitr::kable(head(edges_selected, 6))
 ```
 
 ## PerformerOf
@@ -721,7 +746,8 @@ selected_types <- c("PerformerOf")
 
 edges_selected <- edges_1st_full_named %>%
   filter(`Edge Type` %in% selected_types)
-edges_selected
+
+knitr::kable(head(edges_selected, 6))
 ```
 :::
 
@@ -730,14 +756,17 @@ Then we can visual all the connect from Sailor:
 ```{r}
 edges_1st_filtered <- edges_1st_full_named %>%
   filter(`Edge Type` %in% c("LyricistOf", "PerformerOf", "MemberOf"))
-print(edges_1st_filtered)
+
+knitr::kable(head(edges_1st_filtered, 6))
 ```
 
 ```{r}
-print(edges_1st_filtered)
+knitr::kable(head(edges_1st_filtered, 6))
 ```
 
 ```{r}
+#| code-fold: true
+#| code-summary: "What we can find from the network？"
 
 edge_colors <- c(
   "PerformerOf"         = "#2ca02c",
@@ -844,7 +873,7 @@ print(group_members)
 We attempted to identify the *MemberOf* relationships for Ivy Echos, but the results suggest that this information is not included in the current dataset.”
 
 ```{r}
-edges_1st_full_named
+knitr::kable(head(edges_1st_full_named, 6))
 ```
 
 ```{r}
@@ -866,7 +895,7 @@ edges_others_full <- edges_others %>%
   rename(Participant = from, ParticipantType = `Node Type`) %>%
   select(Participant, ParticipantType, to, `Edge Type`)
 
-print(edges_others_full)
+knitr::kable(head(edges_others_full, 6))
 ```
 
 From the result we can see, in this dataset,Ivy Echos has perform three songs.
@@ -876,6 +905,8 @@ For more convenient exploration, we selected the nodes connected to the third la
 Get the complete information of the from node
 
 ```{r}
+#| code-fold: true
+#| code-summary: "code"
 nodes_tbl <- nodes_tbl %>% mutate(index = row_number())
 
 sailor_index <- nodes_tbl %>%
@@ -899,8 +930,8 @@ edges_2nd <- edges_tbl %>%
 ```
 
 ```{r}
-library(dplyr)
-
+#| code-fold: true
+#| code-summary: "code"
 edges_1st <- edges_all %>%
   filter(from == "Sailor Shift")
 
@@ -940,10 +971,13 @@ edges_2nd_full <- edges_2nd %>%
     to_release_date, to_genre, to_notable, to_notoriety_date
   )
 
-edges_2nd_full
+
+knitr::kable(head(edges_2nd_full, 6))
 ```
 
 ```{r}
+#| code-fold: true
+#| code-summary: "code"
 from_info <- nodes_all %>%
   select(name, `Node Type`, release_date, genre, notable, notoriety_date) %>%
   rename(
@@ -975,7 +1009,7 @@ edges_2nd_full <- edges_2nd %>%
     `Edge Type`
   )
 
-print(edges_2nd_full)
+knitr::kable(head(edges_2nd_full, 6))
 ```
 
 Now we can observe the next layer — identifying which songs and related works have influenced Sailor Shift. At the same time, we also aim to incorporate the time dimension into this analysis.
@@ -983,6 +1017,8 @@ Now we can observe the next layer — identifying which songs and related works 
 **Construct edges_time_ready data**
 
 ```{r}
+#| code-fold: true
+#| code-summary: "Construct edges_time_ready data"
 edges_time_ready <- edges_2nd_full %>%
   mutate(
     from_release_date = as.numeric(from_release_date),
@@ -1037,9 +1073,10 @@ p <- ggplot(edges_time_ready, aes(x = year, y = y_axis_label, group = paste(from
   theme_minimal() +
   theme(
     axis.text.y = element_text(size = 7),
-    plot.title = element_text(face = "bold"),
+    plot.title = element_text(hjust = 0, face = "bold", size = 16),
     panel.grid.minor = element_blank(),
-    legend.position = "bottom"
+    legend.position = "bottom",
+   
   )
 
 interactive_plot <- plotly::ggplotly(p, tooltip = "text")
@@ -1092,6 +1129,8 @@ Creative Maturity vs. Density of Inspiration
 We analyze the 'Person → Work' connections that contribute to the influence on Sailor Shift’s second-layer works.
 
 ```{r}
+#| code-fold: true
+#| code-summary: "code"
 nodes_tbl <- nodes_tbl %>% mutate(index = row_number())
 
 sailor_index <- nodes_tbl %>%
@@ -1137,7 +1176,7 @@ edges_people_to_2nd_tbl <- edges_people_to_2nd %>%
   rename(`Work Name` = name) %>%
   select(`Person Name`, `Work Name`, `Edge Type`, `From Node Type`, `To Node Type`, release_date)
 
-print(edges_people_to_2nd_tbl)
+knitr::kable(head(edges_people_to_2nd_tbl, 10))
 ```
 
 **Final Visualization Summary: Direct and Indirect Influences on Sailor Shift**
@@ -1155,7 +1194,8 @@ Bands and record labels (no further propagation needed)
 -   Third Layer: The creators, producers, and other contributors behind the second-layer works, completing the indirect influence chain.
 
 ```{R}
-
+#| code-fold: true
+#| code-summary: "Final Visualization Summary-Direct and Indirect Influences on Sailor Shift"
 nodes_tbl <- nodes_tbl %>% mutate(index = row_number())
 
 sailor_index <- nodes_tbl %>%
@@ -1281,10 +1321,12 @@ influenced1 <- edges_from_sailor %>%
 ```
 
 ```{r}
-print(influenced1)
+knitr::kable(head(influenced1, 10))
 ```
 
-```{r }
+```{r}
+
+
 subgraph_in <- extract_subnetwork(
   graph, 
   node_name = "Sailor Shift", 
@@ -1352,6 +1394,8 @@ Based on the results, Copper Canyon Ghosts is identified as an Oceanus Folk band
 First, we identify the artists and groups influenced by Sailor Shift. Among them, we determine which ones belong to the Oceanus Folk genre, using "genre" as our key search indicator.
 
 ```{r}
+#| code-fold: true
+#| code-summary: "which ones belong to the Oceanus Folk genre?"
 nodes_tbl <- nodes_tbl %>% mutate(index = row_number())
 
 creator_names <- c(
@@ -1384,12 +1428,15 @@ edges_out_full <- edges_out_full %>%
 ```{r}
 edges_oceanus <- edges_out_full %>%
   filter(genre == "Oceanus Folk")
-edges_oceanus
+
+knitr::kable(head(edges_oceanus, 6))
 ```
 
 This table summarizes the creative contributions of Beatrice Albright, Daniel O'Connell, and Copper Canyon Ghosts to various albums and songs—all of which are part of the Oceanus Folk genre
 
 ```{r }
+#| code-fold: true
+#| code-summary: "How has Sailor Shift influenced collaborators within the broader Oceanus Folk community?"
 
 edges_sailor <- edges_all %>%
   filter(to == "Sailor Shift") %>%
