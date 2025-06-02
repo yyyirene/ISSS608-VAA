@@ -41,7 +41,7 @@ In the code chunk below, `p_load()` of **pacman** package is used to load the R 
 
 ```{r}
 pacman::p_load(tidyverse, jsonlite,
-               tidygraph, ggraph,ggplot2,SmartEDA,igraph,visNetwork)
+               tidygraph, ggraph,ggplot2,SmartEDA,igraph,visNetwork,DiagrammeR)
 ```
 
 ## Importing Kownledge Graph Data
@@ -389,13 +389,9 @@ Notice that the sub-graph above is very clear and the relationship between music
 
 ## Proceed to answer the questions for Mini-Challenge 1
 
-Firstly, I created an `extract_subnetwork` function to simplify the process of extracting network data. The methodology was referenced from a [senior's work.](https://isss608-kjcpaas.netlify.app/take-home_exs/ex3/take-home_ex3#mini-challenge-3) In this case, I also added a `direction` parameter to allow for further filtering.
+Firstly, I created an `extract_subnetwork` function to simplify the process of extracting network data. The methodology was referenced from a [senior's work.](https://isss608-kjcpaas.netlify.app/take-home_exs/ex3/take-home_ex3#mini-challenge-3) In this case, I will also add a `direction` parameter to allow for further filtering.
 
 ```{r}
-
-library(igraph)
-library(tidygraph)
-library(dplyr)
 extract_subnetwork <- function(graph, node_name, 
                                distance = NULL, 
                                direction = c("all", "in", "out"),
@@ -432,300 +428,165 @@ extract_subnetwork <- function(graph, node_name,
 
 ```
 
-There are three sub-questions in Mini-Challenge 1. I have chosen Question 1, and the following is the process I used to solve it:
+Mini-Challenge 1 consists of three questions. Following a group discussion, I selected **Question 1**, and the steps I took to address the **three sub-questions** are described below.
 
-1.  Who has she been most influenced by over time?
+1.  **Who has she been most influenced by over time?**
 
-Sailor Shift--\>Person --\> work
+To address the first question, we considered both direct and indirect influences on Sailor Shift, as well as the temporal dynamics of these influences. The process was divided into three main steps:
 
-1.  Who has she collaborated with and directly or indirectly influenced?
+**1.1** Identify the individuals who directly influenced her.\
 
-1.1 Who has she collaborated with
+**1.2** Examine the works created by Sailor Shift, and trace any indirect influences on these works from others.\
 
-Sailor Shift--\>Person --\> work (direct)
+**1.3** Apply a timeline to analyze how these influences evolved over time and observe any trends in their impact.
 
-Sailor Shift--\>work--\>Person(indirect)
+Sailor Shift \<--Person
 
-1.2Who has she directly or indirectly influenced?
+Sailor Shift--\> work \<-- Person
 
-Sailor Shift--\>Person --\> work (direct)
-
-Sailor Shift--\>work--\>Person(indirect)
-
-3.How has she influenced collaborators of the broader Oceanus Folk community?
-
-Sailor Shift--\>Person/community--\>Work(direct)
+Sailor Shift--\> work_s \<--work_p \<-- Person
 
 ```{r echo=FALSE}
 library(DiagrammeR)
 
 grViz("
-digraph sailor_vertical {
+digraph complex_influence {
+  graph [layout = dot, rankdir = LR, splines = true]
+
+  node [fontname = Helvetica, style = filled, fillcolor = \"white\", shape = box]
+  edge [style = italic, fontname = Helvetica, fontsize = 12, labeldistance = 1.2, labelloc = c, color = gray30]
+
+
+  A   [label = 'Person A']
+  B   [label = 'Person B']
+  SS  [label = 'Sailor Shift', shape = ellipse, fillcolor = \"#fff7c0\"]
+  W   [label = 'Work s']
+  W1  [label = 'Work p']
+  WO  [label = 'Work o']  
+
+  # 连线关系
+  A  -> SS  [label = 'influences']
+  SS -> W   [label = 'creates']
+  B  -> W1  [label = 'creates']
+  W1 -> W   [label = 'influences']
+  WO -> SS  [label = 'influences']  
+}
+")
+
+
+```
+
+2.  **Who has she collaborated with and directly or indirectly influenced?**
+
+To address the second question, we examined both direct and indirect influences involving Sailor Shift, placing her at the center of the analysis.The process was divided into three main steps:
+
+**2.1** Identify who she has collaborated with
+
+Sailor Shift--\>work \<-- Person
+
+```{r echo=FALSE}
+grViz("
+digraph sailor_collab {
   graph [layout = dot, rankdir = LR]
 
-  # 样式
-  node [fontname = Helvetica, style = filled, fillcolor = \"white\", shape = box]
-  edge [fontname = Helvetica]
+  # 节点样式
+  node [fontname = Helvetica, style = filled, fillcolor = \"#ffffff\", shape = box,fontsize = 10, width = 0.5, height = 0.3]
+  edge [fontname = Helvetica, fontsize = 10, color = gray40]
 
-  # 左列：问题（竖排）
-  Q1 [label = 'Q1:\\nInfluenced by others', shape = diamond]
-  Q2 [label = 'Q2:\\nCollaboration & Influence', shape = diamond]
-  Q3 [label = 'Q3:\\nInfluence on Oceanus Folk', shape = diamond]
+  # 节点定义
+  Sailor [label = 'Sailor Shift', shape = ellipse, fillcolor = '#fff7c0']
+  Work   [label = 'Work', shape = box, fillcolor = '#e0f7fa']
+  Person [label = 'Collaborator', shape = ellipse]
 
-  # 右列：回答（每个问题对应多个，竖着排，不强制 rank）
-  Q1a [label = 'Person → Sailor Shift → Work']
-  Q1b [label = 'Work → Sailor Shift → Work']
-
-  Q2a [label = 'Sailor Shift → Person → Work\\n(direct collaboration)']
-  Q2b [label = 'Sailor Shift → Work → Person\\n(indirect collaboration)']
-  Q2c [label = 'Sailor Shift → Person → Work\\n(direct influence)']
-  Q2d [label = 'Sailor Shift → Work → Person\\n(indirect influence)']
-
-  Q3a [label = 'Sailor Shift → Person/Community → Work\\n(Oceanus Folk)']
-
+  # 连线
+  Sailor -> Work [label = 'co-created']
+  Person -> Work [label = 'co-created']
+}
+")
  
-  Q1 -> Q1a
-  Q1 -> Q1b
+```
 
-  Q2 -> Q2a
-  Q2 -> Q2b
-  Q2 -> Q2c
-  Q2 -> Q2d
+\
+**2.2** Determine who she has directly or indirectly influenced
 
-  Q3 -> Q3a
+Sailor Shift--\>Person --\> work (direct)
+
+Sailor Shift--\>work --\>Person (indirect)
+
+```{r echo=FALSE}
+grViz("
+digraph sailor_influence {
+  graph [layout = dot, rankdir = LR]
+
+  # 节点样式
+  node [fontname = Helvetica, style = filled, fillcolor = \"#ffffff\", shape = box]
+  edge [fontname = Helvetica, fontsize = 11, labelfontsize = 11, color = gray40]
+
+  # 节点定义
+  SS  [label = 'Sailor Shift', shape = ellipse, fillcolor = '#fff7c0']
+  P1  [label = 'Person\n(direct)']
+  W1  [label = 'Work']
+  W2  [label = 'Work\n(indirect)']
+  P2  [label = 'Person ']
+
+  # 直接影响路径
+  SS -> P1 [label = 'influences']
+  P1 -> W1 [label = 'creates']
+
+  # 间接影响路径
+  SS -> W2 [label = 'creates']
+  W2 -> P2 [label = 'influences']
 }
 ")
 
 ```
 
-### Who has she collaborated with and directly or indirectly influenced?  & 
+3.How has she influenced collaborators of the broader Oceanus Folk community?
 
-### How has she influenced collaborators of the broader Oceanus Folk community
+Sailor Shift--\>Person/community(Oceanus Folk)--\>Work(Oceanus Folk)
 
-First we will first answer ：Who has she influenced ?
+```{r echo=FALSE}
+grViz("
+digraph oceanus_influence {
+  graph [layout = dot, rankdir = LR]
 
-And here is the directly neighbours :
+  # 样式设置
+  node [fontname = Helvetica, style = filled, fillcolor = \"#ffffff\", shape = box, fontsize = 10]
+  edge [fontname = Helvetica, fontsize = 9, color = gray40]
 
-```{r}
-nodes_tbl <- nodes_tbl %>% mutate(index = row_number())
+  # 节点定义
+  Sailor   [label = 'Sailor Shift', shape = ellipse, fillcolor = '#fff7c0']
+  Community [label = 'Person/Community\\n(Oceanus Folk)', shape = ellipse]
+  Work     [label = 'Work\\n(Oceanus Folk)', shape = box, fillcolor = '#e0f7fa']
 
-sailor_index <- nodes_tbl %>%
-  filter(name == "Sailor Shift") %>%
-  pull(index)
-
-influence_edges <- c("InStyleOf", "CoverOf", "InterpolatesFrom", "LyricalReferenceTo", "DirectlySamples")
-
-edges_from_sailor <- edges_tbl %>%
-  filter(to == sailor_index & `Edge Type` %in% influence_edges)
-
-influenced1 <- edges_from_sailor %>%
-  left_join(nodes_tbl, by = c("from" = "index")) %>%
-  select(name, `Edge Type`, everything())
-```
-
-```{r}
-influenced1
-```
-
-```{r }
-subgraph_in <- extract_subnetwork(
-  graph, 
-  node_name = "Sailor Shift", 
-  distance = 3, 
-  direction = "in"
-)
-
-edges_vn <- igraph::as_data_frame(subgraph_in, what = "edges") %>%
-  filter(`Edge Type` != "ProducerOf") %>%
-  rename(from = from, to = to, label = `Edge Type`)
-
-nodes_vn <- igraph::as_data_frame(subgraph_in, what = "vertices") %>%
-  mutate(id = name, label = name, group = `Node Type`)
-
-used_nodes <- unique(c(edges_vn$from, edges_vn$to))
-nodes_vn <- nodes_vn %>% filter(id %in% used_nodes)
-
-visNetwork(nodes_vn, edges_vn, height = "800px", width = "100%") %>%
-  visEdges(arrows = "to") %>%
-  visOptions(
-    highlightNearest = list(enabled = TRUE, degree = 3, hover = TRUE),
-    nodesIdSelection = TRUE,
-    selectedBy = "group"
-  ) %>%
-  visLegend() %>%
-  visLayout(randomSeed = 1234) %>%
-  visInteraction(navigationButtons = TRUE)
+  # 路径连线
+  Sailor -> Community [label = 'influenced']
+  Community -> Work   [label = 'created']
+}
+")
 
 ```
 
-```{r}
-nodes_vn
-```
+::: callout-caution
+It is important to be especially careful with the direction of relationships such as **"PerformerOf," "ComposerOf," "LyricistOf," "ProducerOf,"** as well as **"DirectlySamples," "InStyleOf," "CoverOf," "InterpolatesFrom,"** and **"LyricalReferenceTo."**\
 
-Second we will first answer ：How has she influenced collaborators of the broader Oceanus Folk community?
+Special attention must be paid to accurately identifying the **source** and **target** of each edge to preserve the correct semantic meaning.
+:::
 
-```{r}
-nodes_tbl <- nodes_tbl %>% mutate(index = row_number())
-
-creator_names <- c(
-  "Zara Quinn", "Milo Knight", "Cassette Future", "Eliza Brooks",
-  "Jasper Reed", "Silver Veil", "Juno Ray", "Savannah Teal",
-  "The Phantom Operators", "Chloe Montgomery", "Nathaniel Brooks", "Clara Davis",
-  "The Hollow Monarchs", "Cassian Storm", "Claire Holmes", "Beatrice Albright",
-  "Daniel O'Connell", "Copper Canyon Ghosts"
-)
-
-creator_ids <- nodes_tbl %>%
-  filter(name %in% creator_names) %>%
-  pull(index)
-
-target_edge_types <- c("PerformerOf", "ComposerOf", "LyricistOf", "ProducerOf")
-
-edges_out <- edges_tbl %>%
-  filter(from %in% creator_ids, `Edge Type` %in% target_edge_types)
-
-edges_out_full <- edges_out %>%
-  left_join(nodes_tbl %>% mutate(index = row_number()), by = c("to" = "index")) %>%
-  select(from, to, `Edge Type`, name, `Node Type`, release_date,genre,notable,notoriety_date)
-
-edges_out_full <- edges_out_full %>%
-  left_join(nodes_tbl %>% select(index, creator_name = name), by = c("from" = "index")) %>%
-  select(creator_name, `Edge Type`, name, `Node Type`, release_date,genre,notable,notoriety_date)
-
-```
-
-```{r}
-edges_oceanus <- edges_out_full %>%
-  filter(genre == "Oceanus Folk")
-edges_oceanus
-```
-
-```{r eval=FALSE }
-library(dplyr)
-library(visNetwork)
-
-
-edges_sailor <- edges_all %>%
-  filter(to == "Sailor Shift") %>%
-  filter(`Edge Type` %in% c("InStyleOf", "LyricalReferenceTo", "CoverOf", "InterpolatesFrom", "DirectlySamples")) %>%
-  select(from, to, `Edge Type`)
-
-creator_work_nodes <- unique(c(edges_oceanus$creator_name, edges_oceanus$name))
-
-all_node_names <- union(
-  creator_work_nodes,
-  unique(c(edges_sailor$from, edges_sailor$to, "Sailor Shift", "Copper Canyon Ghosts"))  
-)
-
-nodes_vn <- nodes_tbl %>%
-  filter(name %in% all_node_names) %>%
-  mutate(
-    id = index,
-    label = name,
-    group = `Node Type`,
-    color.background = ifelse(name == "Sailor Shift", "gold", NA),  # 高亮 Sailor
-    shape = ifelse(name == "Sailor Shift", "star", "dot")
-  )
-
-edges_vn_creator <- edges_oceanus %>%
-  rename(from = creator_name, to = name, label = `Edge Type`) %>%
-  left_join(nodes_vn %>% select(name, id), by = c("from" = "name")) %>%
-  rename(from_id = id) %>%
-  left_join(nodes_vn %>% select(name, id), by = c("to" = "name")) %>%
-  rename(to_id = id) %>%
-  mutate(length = NA) %>%
-  select(from = from_id, to = to_id, label, length) %>%
-  filter(!is.na(from) & !is.na(to))
-
-edges_vn_sailor <- edges_sailor %>%
-  left_join(nodes_vn %>% select(name, id), by = c("from" = "name")) %>%
-  rename(from_id = id) %>%
-  left_join(nodes_vn %>% select(name, id), by = c("to" = "name")) %>%
-  rename(to_id = id) %>%
-  mutate(length = NA) %>%
-  select(from = from_id, to = to_id, label = `Edge Type`, length) %>%
-  filter(!is.na(from) & !is.na(to))
-
-forced_edge <- tibble(
-  from = "Copper Canyon Ghosts",
-  to = "Sailor Shift",
-  label = "DirectlySamples",
-  length = 400
-)
-
-forced_edge_ids <- forced_edge %>%
-  left_join(nodes_vn %>% select(name, id), by = c("from" = "name")) %>%
-  rename(from_id = id) %>%
-  left_join(nodes_vn %>% select(name, id), by = c("to" = "name")) %>%
-  rename(to_id = id) %>%
-  select(from = from_id, to = to_id, label, length) %>%
-  filter(!is.na(from) & !is.na(to))
-
-edges_final <- bind_rows(
-  edges_vn_creator,
-  edges_vn_sailor,
-  forced_edge_ids
-)
-
-visNetwork(nodes_vn, edges_final, height = "700px", width = "100%") %>%
-  visEdges(arrows = "to") %>%
-  visOptions(
-    highlightNearest = TRUE,
-    nodesIdSelection = TRUE,
-    selectedBy = "group"
-  ) %>%
-  visLegend() %>%
-  visLayout(randomSeed = 42) %>%
-  visPhysics(
-    solver = "forceAtlas2Based",
-    forceAtlas2Based = list(gravitationalConstant = -80),
-    stabilization = list(enabled = TRUE, iterations = 100)
-  )
-
-```
-
-Indirectly- We want to explore through the songs and the albums,and then find who she has influenced,but the result seems to 0.
-
-```{r eval=FALSE}
-influence_edges <- c("InStyleOf", "CoverOf", "InterpolatesFrom", "LyricalReferenceTo", "DirectlySamples")
-
-edges_to_sailor <- edges_all %>%
-  filter(
-    to == "Sailor Shift",
-    `Edge Type` %in% influence_edges
-  )
-
-edges_to_sailor_full <- edges_to_sailor %>%
-  left_join(nodes_all %>% select(name, `Node Type`), by = c("from" = "name")) %>%
-  rename(
-    `From Name` = from,
-    `From Type` = `Node Type`
-  ) %>%
-  mutate(
-    `To Name` = "Sailor Shift",
-    `To Type` = "Person"
-  ) %>%
-  select(`From Name`, `From Type`, `To Name`, `To Type`, `Edge Type`)
-
-```
-
-```{r eval=FALSE }
-edges_to_sailor_full
-```
+## Let’s begin.
 
 ### Who has she been most influenced by over time?
 
-In order to answer this question,we need to divide the question into three sub questions:
+Sailor Shift \<--Person
 
-1.Directly or Indirectly been influenced?
+Sailor Shift--\> work \<-- Person
 
-2.If the starting node is Sailor ,what and who is the next node? Her works , Groups, Other work?
+Sailor Shift--\> work_s \<--work_p \<-- Person
 
-3.How to answer the question of influenced by over time?
+From the initial (though imperfect) visNetwork visualization, we first examined what she had produced, and then proceeded to explore further connections.
 
-From the not very perfect visnetwork plot, we firstly see what she have produce and then explore.
+```{r }
 
-```{r}
 subgraph_in <- extract_subnetwork(
   graph, 
   node_name = "Sailor Shift", 
@@ -781,35 +642,9 @@ visNetwork(nodes_vn, edges_vn, height = "800px", width = "100%") %>%
 
 ```
 
-```{r}
-edges_1st <- edges_all %>% 
-  filter(from == "Sailor Shift")
+**First layer edges :**
 
-
-edges_1st_full <- edges_1st %>%
-  left_join(nodes_all, by = c("to" = "name")) %>%
-  select(from, to, `Edge Type`, `Node Type`)  
-
-edges_1st_full
-
-```
-
-All edges starting from Sailor Shift (i.e. first layer edges)
-
-```{R}
-
-edges_1st <- edges_all %>% 
-  filter(from == "Sailor Shift")
-
-colnames(nodes_all)
-
-edges_1st_full <- edges_1st %>%
-  left_join(nodes_all, by = c("to" = "name")) 
-
-edges_1st_full
-```
-
-Add type information of the from node
+We started with all nodes directly connected from Sailor Shift, and added the type information of each corresponding from-node.
 
 ```{r}
 edges_1st_full_named <- edges_1st %>%
@@ -823,10 +658,10 @@ edges_1st_full_named <- edges_1st %>%
   
   select(from, `From Type`, to, `To Type`, `Edge Type`, `To Release`, `To Genre`, `To Notable`, `To Notoriety Date`)
 
-edges_1st_full_named
+print(edges_1st_full_named)
 ```
 
-Below is all the information on the second layer, and remove if there is no other layer
+Below is all the information on the **First** layer, and then remove if there is no other influenced layer
 
 ::: panel-tabset
 ## DirectlySamples \#
@@ -834,7 +669,7 @@ Below is all the information on the second layer, and remove if there is no othe
 ```{r}
 selected_types <- c("DirectlySamples")
 
-edges_selected <- edges_1st_full %>%
+edges_selected <- edges_1st_full_named %>%
   filter(`Edge Type` %in% selected_types)
 edges_selected
 ```
@@ -844,7 +679,7 @@ edges_selected
 ```{R}
 selected_types <- c("InStyleOf")
 
-edges_selected <- edges_1st_full %>%
+edges_selected <- edges_1st_full_named %>%
   filter(`Edge Type` %in% selected_types)
 edges_selected
 ```
@@ -854,7 +689,7 @@ edges_selected
 ```{r}
 selected_types <- c("LyricalReferenceTo")
 
-edges_selected <- edges_1st_full %>%
+edges_selected <- edges_1st_full_named %>%
   filter(`Edge Type` %in% selected_types)
 edges_selected
 ```
@@ -864,7 +699,7 @@ edges_selected
 ```{r}
 selected_types <- c("LyricistOf")
 
-edges_selected <- edges_1st_full %>%
+edges_selected <- edges_1st_full_named %>%
   filter(`Edge Type` %in% selected_types)
 edges_selected
 ```
@@ -874,7 +709,7 @@ edges_selected
 ```{r}
 selected_types <- c("MemberOf")
 
-edges_selected <- edges_1st_full %>%
+edges_selected <- edges_1st_full_named %>%
   filter(`Edge Type` %in% selected_types)
 edges_selected
 ```
@@ -884,7 +719,7 @@ edges_selected
 ```{r}
 selected_types <- c("PerformerOf")
 
-edges_selected <- edges_1st_full %>%
+edges_selected <- edges_1st_full_named %>%
   filter(`Edge Type` %in% selected_types)
 edges_selected
 ```
@@ -893,27 +728,62 @@ edges_selected
 Then we can visual all the connect from Sailor:
 
 ```{r}
-edges_1st_filtered <- edges_1st_full %>%
+edges_1st_filtered <- edges_1st_full_named %>%
   filter(`Edge Type` %in% c("LyricistOf", "PerformerOf", "MemberOf"))
+print(edges_1st_filtered)
 ```
 
 ```{r}
+print(edges_1st_filtered)
+```
+
+```{r}
+
+edge_colors <- c(
+  "PerformerOf"         = "#2ca02c",
+
+  "LyricistOf"          = "#1f77b4",
+ 
+ 
+  "MemberOf"            = "#d62728"
+)
+
 nodes_subgraph <- nodes_all %>%
   filter(name %in% c("Sailor Shift", edges_1st_filtered$to)) %>%
   transmute(id = name, label = name, group = `Node Type`)
 
 edges_subgraph <- edges_1st_filtered %>%
+  left_join(
+    nodes_all %>% select(name, `Node Type`) %>% rename(to = name, to_type = `Node Type`),
+    by = "to"
+  ) %>%
+  mutate(
+    color = edge_colors[`Edge Type`],
+    title = paste0("Edge Type: ", `Edge Type`, "<br>To Type: ", to_type)
+  ) %>%
   transmute(
     from = from,
     to = to,
-    label = `Edge Type`,
-    title = paste0("Edge Type: ", `Edge Type`, "<br>To Type: ", `Node Type`, "<br>Year: ", release_date)
+    title = title,
+    color = color,
+    arrows = "to"
   )
 
+edge_legend <- data.frame(
+  label = names(edge_colors),
+  color = unname(edge_colors),
+  arrows = rep("to", length(edge_colors)),
+  stringsAsFactors = FALSE
+)
+
 visNetwork(nodes_subgraph, edges_subgraph, width = "100%", height = "700px") %>%
-  visEdges(arrows = "to") %>%
+  visEdges(smooth = TRUE) %>%
   visOptions(highlightNearest = TRUE, nodesIdSelection = TRUE) %>%
-  visLegend(useGroups = TRUE, position = "right") %>%
+  visLegend(
+    addEdges = edge_legend,
+    useGroups = TRUE,
+    position = "right",
+  ) %>%
   visPhysics(
     solver = "forceAtlas2Based",
     forceAtlas2Based = list(gravitationalConstant = -80),
@@ -922,6 +792,38 @@ visNetwork(nodes_subgraph, edges_subgraph, width = "100%", height = "700px") %>%
   visLayout(randomSeed = 123)
 
 ```
+
+::: callout-note
+## What we can find from the network？
+
+**She is a highly prolific creator**
+
+-   The dense number of outgoing edges indicates that Sailor Shift has contributed to or performed a large number of works, including both songs and albums.
+
+-   The number of connected nodes shows she is linked to over 20 works, placing her at the center of the network.
+
+**She plays both performer and lyricist roles**
+
+The presence of many green edges (PerformerOf) and blue edges (LyricistOf) suggests:
+
+-   She not only performs but also writes lyrics for her works.
+
+-   She plays a dual role in the music creation process, showing versatility as both a performer and a songwriter.
+
+**She is not an entirely solo artist**
+
+A red edge (MemberOf) connects her to the red node `Ivy Echos`, indicating:
+
+-   She is a member of this musical group.
+
+-   Some of her creative output may result from group collaboration.
+
+-   She maintains a balance between solo and group work.
+
+Sailor Shift is a central figure,skilled in both songwriting and performance, and active in both solo and collaborative projects. Her work likely forms a key part of the community's creative landscape.
+:::
+
+Next, we aim to explore other’s relationship with Ivy Echos.”
 
 ```{r}
 ivy_groups <- edges_all %>%
@@ -935,13 +837,20 @@ group_members <- edges_all %>%
   filter(`Edge Type` == "MemberOf", to %in% ivy_groups) %>%
   select(from, to) %>%
   rename(Member = from, Group = to)
-group_members
+
+print(group_members)
+```
+
+We attempted to identify the *MemberOf* relationships for Ivy Echos, but the results suggest that this information is not included in the current dataset.”
+
+```{r}
+edges_1st_full_named
 ```
 
 ```{r}
-sailor_works <- edges_1st_full %>%
+sailor_works <- edges_1st_full_named %>%
   filter(`Edge Type` %in% c("ComposerOf", "PerformerOf", "LyricistOf", "ProducerOf","MemberOf"),
-         `Node Type` %in% c("Song", "Album","MusicalGroup","Person","RecordLabel")) %>%
+         `To Type` %in% c("Song", "Album","MusicalGroup","Person","RecordLabel")) %>%
   pull(to) %>%
   unique()
 
@@ -957,10 +866,37 @@ edges_others_full <- edges_others %>%
   rename(Participant = from, ParticipantType = `Node Type`) %>%
   select(Participant, ParticipantType, to, `Edge Type`)
 
-edges_others_full
+print(edges_others_full)
 ```
 
-And we have select the node that have connect the the third layer and to see the indirectly being influenced.
+From the result we can see, in this dataset,Ivy Echos has perform three songs.
+
+For more convenient exploration, we selected the nodes connected to the third layer in order to observe indirect influences
+
+Get the complete information of the from node
+
+```{r}
+nodes_tbl <- nodes_tbl %>% mutate(index = row_number())
+
+sailor_index <- nodes_tbl %>%
+  filter(name == "Sailor Shift") %>%
+  pull(index)
+
+edges_from_sailor <- edges_tbl %>%
+  filter(from == sailor_index)
+
+first_layer_info <- edges_from_sailor %>%
+  inner_join(nodes_tbl, by = c("to" = "index")) %>%
+  filter(`Node Type` %in% c("Song", "Album", "MusicalGroup", "RecordLabel"))
+
+first_layer_targets <- first_layer_info$to
+
+influence_edges <- c("InStyleOf", "LyricalReferenceTo", "InterpolatesFrom", "CoverOf", "DirectlySamples")
+
+edges_2nd <- edges_tbl %>%
+  filter(from %in% first_layer_targets & `Edge Type` %in% influence_edges)
+
+```
 
 ```{r}
 library(dplyr)
@@ -1007,8 +943,6 @@ edges_2nd_full <- edges_2nd %>%
 edges_2nd_full
 ```
 
-Get the complete information of the from node
-
 ```{r}
 from_info <- nodes_all %>%
   select(name, `Node Type`, release_date, genre, notable, notoriety_date) %>%
@@ -1041,16 +975,14 @@ edges_2nd_full <- edges_2nd %>%
     `Edge Type`
   )
 
-edges_2nd_full
-
+print(edges_2nd_full)
 ```
 
-And next we are going to add the time dimension with the influnce.
+Now we can observe the next layer — identifying which songs and related works have influenced Sailor Shift. At the same time, we also aim to incorporate the time dimension into this analysis.
 
-Construct edges_time_ready data
+**Construct edges_time_ready data**
 
 ```{r}
-
 edges_time_ready <- edges_2nd_full %>%
   mutate(
     from_release_date = as.numeric(from_release_date),
@@ -1061,7 +993,7 @@ edges_time_ready <- edges_2nd_full %>%
     influencer_point = to,
     sailor_point = from,
     work_label = paste0(from, " (Sailor)"),
-    y_axis_label = paste0(from, " (Sailor)")  # 固定 Y 轴标签
+    y_axis_label = paste0(from, " (Sailor)") 
   ) %>%
   tidyr::pivot_longer(
     cols = c(to_release_date, from_release_date),
@@ -1157,10 +1089,47 @@ Creative Maturity vs. Density of Inspiration
     Her most notable works (marked as `Notable = TRUE`) tend to be those that were heavily influenced — indicating that *inspiration led to impact*.
 :::
 
-View the “person → work” relationships that influence second-level works
+We analyze the 'Person → Work' connections that contribute to the influence on Sailor Shift’s second-layer works.
 
-```{r eval=FALSE}
+```{r}
+nodes_tbl <- nodes_tbl %>% mutate(index = row_number())
 
+sailor_index <- nodes_tbl %>%
+  filter(name == "Sailor Shift") %>%
+  pull(index)
+
+edges_from_sailor <- edges_tbl %>%
+  filter(from == sailor_index)
+
+first_layer_info <- edges_from_sailor %>%
+  inner_join(nodes_tbl, by = c("to" = "index")) %>%
+  filter(`Node Type` %in% c("Song", "Album", "MusicalGroup", "RecordLabel"))
+
+first_layer_targets <- first_layer_info$to
+
+influence_edges <- c("InStyleOf", "LyricalReferenceTo", "InterpolatesFrom", "CoverOf", "DirectlySamples")
+
+edges_2nd <- edges_tbl %>%
+  filter(from %in% first_layer_targets & `Edge Type` %in% influence_edges)
+
+influenced_works <- edges_2nd$to
+songs_with_outgoing <- unique(edges_2nd$from)
+
+person_edge_types <- c("PerformerOf", "ComposerOf", "LyricistOf", "ProducerOf")
+
+edges_people_to_2nd <- edges_tbl %>%
+  filter(
+    to %in% influenced_works,
+    `Edge Type` %in% person_edge_types
+  ) %>%
+  left_join(nodes_tbl %>% select(index, `Node Type`), by = c("from" = "index")) %>%
+  rename(`From Node Type` = `Node Type`) %>%
+  filter(`From Node Type` %in% c("Person", "RecordLabel")) %>%
+  left_join(nodes_tbl %>% select(index, `Node Type`, release_date), by = c("to" = "index")) %>%
+  rename(`To Node Type` = `Node Type`, release_date = release_date)
+```
+
+```{r}
 edges_people_to_2nd_tbl <- edges_people_to_2nd %>%
   left_join(nodes_tbl %>% select(index, name), by = c("from" = "index")) %>%
   rename(`Person Name` = name) %>%
@@ -1168,22 +1137,24 @@ edges_people_to_2nd_tbl <- edges_people_to_2nd %>%
   rename(`Work Name` = name) %>%
   select(`Person Name`, `Work Name`, `Edge Type`, `From Node Type`, `To Node Type`, release_date)
 
-edges_people_to_2nd_tbl
+print(edges_people_to_2nd_tbl)
 ```
 
-Here are the final plot that she has been influenced directly and indirectly.
+**Final Visualization Summary: Direct and Indirect Influences on Sailor Shift**
 
-First layer: only keep what Sailor Shift points to: (indirectly, who is affected by the following)
+-   First Layer: Nodes directly connected from Sailor Shift.
 
-Songs and albums (these must also be spread in the second layer)
+Includes:
 
-Bands and companies (no need to continue to spread)
+Songs and albums (these will propagate influence to the next layer)
 
-Second layer: keep all "works with affected people" Third layer: connect the creators, producers, etc. of the second layer works
+Bands and record labels (no further propagation needed)
+
+-   Second Layer: All works that are influenced by the first-layer songs/albums and are linked to other individuals.
+
+-   Third Layer: The creators, producers, and other contributors behind the second-layer works, completing the indirect influence chain.
 
 ```{R}
-library(dplyr)
-library(visNetwork)
 
 nodes_tbl <- nodes_tbl %>% mutate(index = row_number())
 
@@ -1257,94 +1228,82 @@ edges_subgraph <- all_edges %>%
 visNetwork(nodes_subgraph, edges_subgraph, width = "100%", height = "700px") %>%
   visEdges(arrows = "to") %>%
   visOptions(highlightNearest = TRUE, nodesIdSelection = TRUE) %>%
-  visLegend(useGroups = TRUE, position = "right") %>%
+  visLegend(
+    useGroups = TRUE,
+    position = "right",
+  ) %>%
+  visPhysics(
+    solver = "forceAtlas2Based",
+    forceAtlas2Based = list(gravitationalConstant = -80),
+    stabilization = list(enabled = TRUE, iterations = 100)
+  ) %>%
   visLayout(randomSeed = 123)
 
 ```
 
-```{r eval=FALSE }
-library(dplyr)
-library(visNetwork)
+::: callout-note
+## Who has she been most influenced?
 
+The visual network clearly illustrates that Sailor Shift is not an isolated creator, but rather a convergence point within a multi-layered web of artistic influence.
+
+She is directly influenced by several notable works, such as Tides of Echos and Electric Reverie, which themselves are shaped by earlier compositions and artists.
+
+Among the sources of influence, four musical groups play a key role, including her own band Ivy Echos. The remaining groups—such as The Saltwater Weavers, The Fiddle & the Fjord, and The Salty Wakes—are projects she was closely involved in, either as a producer or performer. This dual role highlights her position as both an influencer and a participant in collaborative creation.
+
+In the third layer of the influence network, most of the connections are formed through InStyleOf and InterpolatesFrom edges, indicating that Sailor Shift primarily draws inspiration from the style and structural elements of earlier works. Only a few edges fall under CoverOf, suggesting that her creative process leans more toward reinterpretation and transformation rather than direct replication.
+
+This cascading network of style, melody, and lyrical influence reflects not only her artistic lineage, but also reveals the broader creative transmission ecosystem within the Oceanus Folk community.
+:::
+
+### 2.Who has she collaborated with and directly or indirectly influenced? &
+
+### 3.How has she influenced collaborators of the broader Oceanus Folk community
+
+**First we will first answer ：Who has she influenced ?**
+
+And here is the directly neighbours :
+
+```{r}
 nodes_tbl <- nodes_tbl %>% mutate(index = row_number())
 
 sailor_index <- nodes_tbl %>%
   filter(name == "Sailor Shift") %>%
   pull(index)
 
+influence_edges <- c("InStyleOf", "CoverOf", "InterpolatesFrom", "LyricalReferenceTo", "DirectlySamples")
+
 edges_from_sailor <- edges_tbl %>%
-  filter(from == sailor_index)
+  filter(to == sailor_index & `Edge Type` %in% influence_edges)
 
-first_layer_info <- edges_from_sailor %>%
-  inner_join(nodes_tbl, by = c("to" = "index")) %>%
-  filter(`Node Type` %in% c("Song", "Album", "MusicalGroup", "RecordLabel"))
+influenced1 <- edges_from_sailor %>%
+  left_join(nodes_tbl, by = c("from" = "index")) %>%
+  select(name, `Edge Type`, everything())
+```
 
-first_layer_targets <- first_layer_info$to
+```{r}
+print(influenced1)
+```
 
-influence_edges <- c("InStyleOf", "LyricalReferenceTo", "InterpolatesFrom", "CoverOf", "DirectlySamples")
-
-edges_2nd <- edges_tbl %>%
-  filter(from %in% first_layer_targets & `Edge Type` %in% influence_edges)
-
-influenced_works <- edges_2nd$to
-songs_with_outgoing <- unique(edges_2nd$from) 
-
-related_edge_types <- c("PerformerOf", "ComposerOf", "LyricistOf", "ProducerOf",
-                        "InStyleOf", "LyricalReferenceTo", "InterpolatesFrom", "CoverOf", "DirectlySamples")
-
-edges_3rd <- edges_tbl %>%
-  filter(to %in% influenced_works & `Edge Type` %in% related_edge_types) %>%
-  left_join(nodes_tbl %>% select(index, `Node Type`), by = c("to" = "index")) %>%
-  rename(to_type = `Node Type`) %>%
-  filter(
-    !(
-      (to_type == "Song" & `Edge Type` %in% c("PerformerOf", "LyricalReferenceTo", "InStyleOf", "InterpolatesFrom")) |
-      (to_type == "Album" & `Edge Type` %in% c("InStyleOf", "CoverOf", "InterpolatesFrom", "LyricalReferenceTo", "DirectlySamples")) |
-      (to_type == "MusicalGroup" & `Edge Type` %in% c("InStyleOf", "CoverOf", "InterpolatesFrom", "LyricalReferenceTo", "DirectlySamples"))
-    )
-  )
-
-
-first_layer_filtered <- first_layer_info %>%
-  filter(
-    (`Node Type` %in% c("Song", "Album") & to %in% songs_with_outgoing) |
-    (`Node Type` %in% c("MusicalGroup", "RecordLabel"))
-  )
-
-edges_from_sailor_filtered <- edges_from_sailor %>%
-  semi_join(first_layer_filtered, by = c("to" = "to"))
-
-all_edges <- bind_rows(
-  edges_from_sailor_filtered,
-  edges_2nd,
-  edges_3rd
+```{r }
+subgraph_in <- extract_subnetwork(
+  graph, 
+  node_name = "Sailor Shift", 
+  distance = 3, 
+  direction = "in"
 )
 
-used_ids <- unique(c(all_edges$from, all_edges$to))
+edges_vn <- igraph::as_data_frame(subgraph_in, what = "edges") %>%
+  filter(`Edge Type` != "ProducerOf") %>%
+  rename(from = from, to = to, label = `Edge Type`)
 
-nodes_filtered <- nodes_tbl %>%
-  filter(index %in% used_ids) %>%
-  mutate(
-    id = index,
-    label = name,
-    group = `Node Type`,
-    size = case_when(
-      name == "Sailor Shift" ~ 30,
-      `Node Type` == "Song" ~ 20,
-      TRUE ~ 15
-    )
-  )
+nodes_vn <- igraph::as_data_frame(subgraph_in, what = "vertices") %>%
+  mutate(id = name, label = name, group = `Node Type`)
 
-edges_filtered <- all_edges %>%
-  rename(from = from, to = to, label = `Edge Type`) %>%
-  mutate(color = case_when(
-    label %in% influence_edges ~ "orange",
-    label %in% related_edge_types ~ "red",
-    TRUE ~ "gray"
-  ))
+used_nodes <- unique(c(edges_vn$from, edges_vn$to))
+nodes_vn <- nodes_vn %>% filter(id %in% used_nodes)
 
-visNetwork(nodes_filtered, edges_filtered, height = "800px", width = "100%") %>%
-  visEdges(arrows = "to", color = edges_filtered$color) %>%
+visNetwork(nodes_vn, edges_vn, height = "800px", width = "100%") %>%
+  visEdges(arrows = "to") %>%
   visOptions(
     highlightNearest = list(enabled = TRUE, degree = 3, hover = TRUE),
     nodesIdSelection = TRUE,
@@ -1355,3 +1314,178 @@ visNetwork(nodes_filtered, edges_filtered, height = "800px", width = "100%") %>%
   visInteraction(navigationButtons = TRUE)
 
 ```
+
+::: callout-note
+## Who has she influenced directly or indirectly？
+
+These are edges originating from Sailor Shift, indicating how she influences other groups or works:
+
+-   InStyleOf: stylistic influence or similar musical style
+
+-   InterpolatesFrom: portions of her work have been interpolated
+
+-   LyricalReferenceTo: her name or lyrics are referenced
+
+-   DirectlySamples: her work has been directly sampled
+
+Sailor Shift has a broad creative influence
+
+-   She influences at least 5 different groups (e.g., Cassette Future, The Hollow Monarchs)
+
+-   The types of influence span style, lyrics, and sampling.
+
+An indirect "sub-network" is formed
+
+-   For example, through the path Sailor Shift → Cassette Future → Zara Quinn, her influence extends to band members as well.
+
+Strong structural centrality
+
+-   Sailor Shift is the hub of this network, with nearly all edges revolving around her.
+
+-   This suggests she holds a central position of influence in this music community.
+:::
+
+We attempted to trace Sailor Shift’s indirect influence through songs and albums to identify impacted individuals. However, this approach yielded no results, so we decided not to pursue this path further.
+
+Based on the results, Copper Canyon Ghosts is identified as an Oceanus Folk band. To explore the third question—"**How has Sailor Shift influenced collaborators within the broader Oceanus Folk community**?"—we will examine both direct and indirect influence paths .
+
+First, we identify the artists and groups influenced by Sailor Shift. Among them, we determine which ones belong to the Oceanus Folk genre, using "genre" as our key search indicator.
+
+```{r}
+nodes_tbl <- nodes_tbl %>% mutate(index = row_number())
+
+creator_names <- c(
+  "Zara Quinn", "Milo Knight", "Cassette Future", "Eliza Brooks",
+  "Jasper Reed", "Silver Veil", "Juno Ray", "Savannah Teal",
+  "The Phantom Operators", "Chloe Montgomery", "Nathaniel Brooks", "Clara Davis",
+  "The Hollow Monarchs", "Cassian Storm", "Claire Holmes", "Beatrice Albright",
+  "Daniel O'Connell", "Copper Canyon Ghosts"
+)
+
+creator_ids <- nodes_tbl %>%
+  filter(name %in% creator_names) %>%
+  pull(index)
+
+target_edge_types <- c("PerformerOf", "ComposerOf", "LyricistOf", "ProducerOf")
+
+edges_out <- edges_tbl %>%
+  filter(from %in% creator_ids, `Edge Type` %in% target_edge_types)
+
+edges_out_full <- edges_out %>%
+  left_join(nodes_tbl %>% mutate(index = row_number()), by = c("to" = "index")) %>%
+  select(from, to, `Edge Type`, name, `Node Type`, release_date,genre,notable,notoriety_date)
+
+edges_out_full <- edges_out_full %>%
+  left_join(nodes_tbl %>% select(index, creator_name = name), by = c("from" = "index")) %>%
+  select(creator_name, `Edge Type`, name, `Node Type`, release_date,genre,notable,notoriety_date)
+
+```
+
+```{r}
+edges_oceanus <- edges_out_full %>%
+  filter(genre == "Oceanus Folk")
+edges_oceanus
+```
+
+This table summarizes the creative contributions of Beatrice Albright, Daniel O'Connell, and Copper Canyon Ghosts to various albums and songs—all of which are part of the Oceanus Folk genre
+
+```{r }
+
+edges_sailor <- edges_all %>%
+  filter(to == "Sailor Shift") %>%
+  filter(`Edge Type` %in% c("InStyleOf", "LyricalReferenceTo", "CoverOf", "InterpolatesFrom", "DirectlySamples")) %>%
+  select(from, to, `Edge Type`)
+
+creator_work_nodes <- unique(c(edges_oceanus$creator_name, edges_oceanus$name))
+
+all_node_names <- union(
+  creator_work_nodes,
+  unique(c(edges_sailor$from, edges_sailor$to, "Sailor Shift", "Copper Canyon Ghosts"))  
+)
+
+nodes_vn <- nodes_tbl %>%
+  filter(name %in% all_node_names) %>%
+  mutate(
+    id = index,
+    label = name,
+    group = `Node Type`,
+    color.background = ifelse(name == "Sailor Shift", "gold", NA),  # 高亮 Sailor
+    shape = ifelse(name == "Sailor Shift", "star", "dot")
+  )
+
+edges_vn_creator <- edges_oceanus %>%
+  rename(from = creator_name, to = name, label = `Edge Type`) %>%
+  left_join(nodes_vn %>% select(name, id), by = c("from" = "name")) %>%
+  rename(from_id = id) %>%
+  left_join(nodes_vn %>% select(name, id), by = c("to" = "name")) %>%
+  rename(to_id = id) %>%
+  mutate(length = NA) %>%
+  select(from = from_id, to = to_id, label, length) %>%
+  filter(!is.na(from) & !is.na(to))
+
+edges_vn_sailor <- edges_sailor %>%
+  left_join(nodes_vn %>% select(name, id), by = c("from" = "name")) %>%
+  rename(from_id = id) %>%
+  left_join(nodes_vn %>% select(name, id), by = c("to" = "name")) %>%
+  rename(to_id = id) %>%
+  mutate(length = NA) %>%
+  select(from = from_id, to = to_id, label = `Edge Type`, length) %>%
+  filter(!is.na(from) & !is.na(to))
+
+forced_edge <- tibble(
+  from = "Copper Canyon Ghosts",
+  to = "Sailor Shift",
+  label = "DirectlySamples",
+  length = 400
+)
+
+forced_edge_ids <- forced_edge %>%
+  left_join(nodes_vn %>% select(name, id), by = c("from" = "name")) %>%
+  rename(from_id = id) %>%
+  left_join(nodes_vn %>% select(name, id), by = c("to" = "name")) %>%
+  rename(to_id = id) %>%
+  select(from = from_id, to = to_id, label, length) %>%
+  filter(!is.na(from) & !is.na(to))
+
+edges_final <- bind_rows(
+  edges_vn_creator,
+  edges_vn_sailor,
+  forced_edge_ids
+)
+
+visNetwork(nodes_vn, edges_final, height = "700px", width = "100%") %>%
+  visEdges(arrows = "to") %>%
+  visOptions(
+    highlightNearest = TRUE,
+    nodesIdSelection = TRUE,
+    selectedBy = "group"
+  ) %>%
+  visLegend() %>%
+  visLayout(randomSeed = 42) %>%
+  visPhysics(
+    solver = "forceAtlas2Based",
+    forceAtlas2Based = list(gravitationalConstant = -80),
+    stabilization = list(enabled = TRUE, iterations = 100)
+  )
+
+```
+
+::: callout-note
+## How has Sailor Shift influenced collaborators within the broader Oceanus Folk community
+
+Sailor Shift → influences Copper Canyon Ghosts → performs representative works → connects with Daniel and Beatrice through shared creations
+
+This influence pathway shows that Sailor Shift's creative style and content are indirectly transmitted to other members of the Oceanus Folk community through collaborative performances and reinterpretations.\
+
+The network visualization reveals that Sailor Shift influences key figures in the Oceanus Folk scene both directly and indirectly.\
+
+She is sampled by Copper Canyon Ghosts, a band that performs major works composed by Daniel O'Connell and Beatrice Albright.\
+
+These shared works form the musical core of the Oceanus Folk genre, creating a multi-layered influence network with Sailor Shift at its source.\
+
+Her creative impact extends beyond direct collaboration—spreading throughout the community via the chain of **work → band → collaborators**, shaping the genre’s evolution and collective identity.
+:::
+
+## Summary of Question 1
+
+Sailor Shift is both a cultural inheritor and a creative engine. She draws on decades of musical history, spanning genres from Synthwave to Americana, integrating them into the Oceanus Folk style. Through direct performances and indirect stylistic channels, she influences a wide web of collaborators and emerging artists—serving as a stylistic and structural anchor for the Oceanus Folk scene. Her work demonstrates a rare balance between solo artistry and community participation, making her a pivotal node in the evolution of this genre.
