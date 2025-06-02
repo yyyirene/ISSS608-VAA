@@ -9,7 +9,6 @@ execute:
   message: false
   freeze: true
   warning: FALSE
-  format: docx
 ---
 
 # VAST Challenge 2024 Mini-Challenge 1
