@@ -9,6 +9,8 @@ execute:
   message: false
   freeze: true
   warning: FALSE
+  #format: docx
+  #editor: visual
 ---
 
 # VAST Challenge 2024 Mini-Challenge 1
@@ -213,7 +215,7 @@ id_map <- tibble(id = nodes_tbl$id,  #Retrieve the ID column of each row node
 
 ```
 
-### **Map source and target IDs to row indices**
+### Map source and target IDs to row indices
 
 Next, we will map the source and the target IDs to row indices by using the code chunk below.
 
@@ -241,41 +243,6 @@ table(edges_tbl$`Edge Type`)
 
 ```
 
-```{r eval=FALSE }
-library(dplyr)
-
-of_edges <- edges_tbl %>%
-  filter(`Edge Type` %in% c("PerformerOf", "ComposerOf", "LyricistOf", "ProducerOf"))
-
-of_edges_with_target_info <- of_edges %>%
-  left_join(nodes_tbl, by = c("target" = "id")) %>%
-  select(`Edge Type`, target_name = name, target_type = `Node Type`)
-
-summary_table <- of_edges_with_target_info %>%
-  group_by(`Edge Type`, target_type) %>%
-  summarise(count = n(), .groups = "drop") %>%
-  arrange(`Edge Type`, desc(count))
-
-print(summary_table)
-```
-
-```{r eval=FALSE }
-of_edges_full <- of_edges %>%
-  left_join(nodes_tbl, by = c("source" = "id")) %>%
-  rename(from_name = name, from_type = `Node Type`) %>%
-  left_join(nodes_tbl, by = c("target" = "id")) %>%
-  rename(to_name = name, to_type = `Node Type`) %>%
-  select(`Edge Type`, from_name, from_type, to_name, to_type)
-
-print(of_edges_full)
-
-```
-
-```{r eval=FALSE }
-of_edges_full %>%
-  count(`Edge Type`, from_type)
-```
-
 ### Filter out any unmatched (invalid) edges
 
 Lastly, the code chunk below will be used to exclude the unmatch edges.
@@ -299,7 +266,7 @@ graph <- tbl_graph(nodes = nodes_tbl,
 graph
 ```
 
-You might want to confirm the output object is indeed in tidygraph format by using the code chunk below.
+we might want to confirm the output object is indeed in tidygraph format by using the code chunk below.
 
 ```{r}
 class(graph)
@@ -351,7 +318,7 @@ graph_memberof <- graph %>%
 
 #### **Extracting only connected nodes (i.e., used in these edges)**
 
-```{r eval=FALSE }
+```{r }
 used_node_indices <- graph_memberof %>%
   activate(edges) %>%
   as_tibble() %>%
@@ -362,7 +329,7 @@ used_node_indices <- graph_memberof %>%
 
 #### **Keeping only those nodes**
 
-```{r eval=FALSE }
+```{r}
 graph_memberof <- graph_memberof %>%
   activate(nodes) %>%
   mutate(row_id = row_number()) %>%
@@ -372,7 +339,7 @@ graph_memberof <- graph_memberof %>%
 
 #### **Plotting the sub-graph**
 
-```{r eval=FALSE }
+```{r }
 ggraph(graph_memberof, 
        layout = "fr") +
   geom_edge_link(alpha = 0.5, 
@@ -392,6 +359,9 @@ Notice that the sub-graph above is very clear and the relationship between music
 Firstly, I created an `extract_subnetwork` function to simplify the process of extracting network data. The methodology was referenced from a [senior's work.](https://isss608-kjcpaas.netlify.app/take-home_exs/ex3/take-home_ex3#mini-challenge-3) In this case, I will also add a `direction` parameter to allow for further filtering.
 
 ```{r}
+#| code-fold: true
+#| code-summary: "Extract_subnetwork "
+
 extract_subnetwork <- function(graph, node_name, 
                                distance = NULL, 
                                direction = c("all", "in", "out"),
@@ -428,7 +398,7 @@ extract_subnetwork <- function(graph, node_name,
 
 ```
 
-Mini-Challenge 1 consists of three questions. Following a group discussion, I selected **Question 1**, and the steps I took to address the **three sub-questions** are described below.
+**Mini-Challenge 1 consists of three questions. Following a group discussion, I selected Question 1, and the steps I took to address the three sub-questions are described below.**
 
 1.  **Who has she been most influenced by over time?**
 
@@ -440,11 +410,11 @@ To address the first question, we considered both direct and indirect influences
 
 **1.3** Apply a timeline to analyze how these influences evolved over time and observe any trends in their impact.
 
-Sailor Shift \<--Person
+Sailor Shift \<-- Person
 
-Sailor Shift--\> work \<-- Person
+Sailor Shift --\> work \<-- Person
 
-Sailor Shift--\> work_s \<--work_p \<-- Person
+Sailor Shift --\> work_s \<-- work_p \<-- Person
 
 ```{r eval=FALSE}
 #| code-fold: true
@@ -515,9 +485,9 @@ digraph sailor_collab {
 ![](images/clipboard-42460967.png){width="696"}\
 **2.2** Determine who she has directly or indirectly influenced
 
-Sailor Shift--\>Person --\> work (direct)
+Sailor Shift --\> Person --\> work (direct)
 
-Sailor Shift--\>work --\>Person (indirect)
+Sailor Shift--\> work --\> Person (indirect)
 
 ```{r eval=FALSE}
 #| code-fold: true
@@ -552,9 +522,9 @@ digraph sailor_influence {
 
 ![](images/clipboard-2688711872.png)
 
-3.How has she influenced collaborators of the broader Oceanus Folk community?
+**3.How has she influenced collaborators of the broader Oceanus Folk community?**
 
-Sailor Shift--\>Person/community(Oceanus Folk)--\>Work(Oceanus Folk)
+Sailor Shift--\> Person/community(Oceanus Folk) --\> Work(Oceanus Folk)
 
 ```{r eval=FALSE}
 #| code-fold: true
@@ -593,11 +563,13 @@ Special attention must be paid to accurately identifying the **source** and **ta
 
 ### **1.Who has she been most influenced by over time?**
 
-Sailor Shift \<--Person
+The following is the thinking process:
+
+Sailor Shift \<-- Person
 
 Sailor Shift--\> work \<-- Person
 
-Sailor Shift--\> work_s \<--work_p \<-- Person
+Sailor Shift--\> work_s \<-- work_p \<-- Person
 
 From the initial (though imperfect) visNetwork visualization, we first examined what she had produced, and then proceeded to explore further connections.
 
@@ -676,8 +648,10 @@ edges_1st_full_named <- edges_1st %>%
   
   select(from, `From Type`, to, `To Type`, `Edge Type`, `To Release`, `To Genre`, `To Notable`, `To Notoriety Date`)
 
-knitr::kable(head(edges_1st_full_named, 6))
+```
 
+```{R}
+knitr::kable(edges_1st_full_named)
 ```
 
 Below is all the information on the **First** layer, and then remove if there is no other influenced layer
@@ -691,7 +665,7 @@ selected_types <- c("DirectlySamples")
 edges_selected <- edges_1st_full_named %>%
   filter(`Edge Type` %in% selected_types)
 
-knitr::kable(head(edges_selected, 6))
+knitr::kable(edges_selected)
 
 ```
 
@@ -703,7 +677,7 @@ selected_types <- c("InStyleOf")
 edges_selected <- edges_1st_full_named %>%
   filter(`Edge Type` %in% selected_types)
 
-knitr::kable(head(edges_selected, 6))
+knitr::kable(edges_selected)
 ```
 
 ## LyricalReferenceTo \#
@@ -711,10 +685,10 @@ knitr::kable(head(edges_selected, 6))
 ```{r}
 selected_types <- c("LyricalReferenceTo")
 
-edges_selected <- edges_1st_full_named %>%
+edges_selected_LyricalReferenceTo <- edges_1st_full_named %>%
   filter(`Edge Type` %in% selected_types)
 
-knitr::kable(head(selected_types, 6))
+knitr::kable(edges_selected_LyricalReferenceTo)
 ```
 
 ## LyricistOf
@@ -725,7 +699,7 @@ selected_types <- c("LyricistOf")
 edges_selected <- edges_1st_full_named %>%
   filter(`Edge Type` %in% selected_types)
 
-knitr::kable(head(edges_selected, 6))
+knitr::kable(edges_selected)
 ```
 
 ## MemberOf \#
@@ -736,7 +710,7 @@ selected_types <- c("MemberOf")
 edges_selected <- edges_1st_full_named %>%
   filter(`Edge Type` %in% selected_types)
 
-knitr::kable(head(edges_selected, 6))
+knitr::kable(edges_selected)
 ```
 
 ## PerformerOf
@@ -747,7 +721,7 @@ selected_types <- c("PerformerOf")
 edges_selected <- edges_1st_full_named %>%
   filter(`Edge Type` %in% selected_types)
 
-knitr::kable(head(edges_selected, 6))
+knitr::kable(edges_selected)
 ```
 :::
 
@@ -757,16 +731,12 @@ Then we can visual all the connect from Sailor:
 edges_1st_filtered <- edges_1st_full_named %>%
   filter(`Edge Type` %in% c("LyricistOf", "PerformerOf", "MemberOf"))
 
-knitr::kable(head(edges_1st_filtered, 6))
-```
-
-```{r}
-knitr::kable(head(edges_1st_filtered, 6))
+knitr::kable(edges_1st_filtered)
 ```
 
 ```{r}
 #| code-fold: true
-#| code-summary: "What we can find from the network？"
+#| code-summary: "All the connect from Sailor-Song & Album & Group"
 
 edge_colors <- c(
   "PerformerOf"         = "#2ca02c",
@@ -873,10 +843,6 @@ print(group_members)
 We attempted to identify the *MemberOf* relationships for Ivy Echos, but the results suggest that this information is not included in the current dataset.”
 
 ```{r}
-knitr::kable(head(edges_1st_full_named, 6))
-```
-
-```{r}
 sailor_works <- edges_1st_full_named %>%
   filter(`Edge Type` %in% c("ComposerOf", "PerformerOf", "LyricistOf", "ProducerOf","MemberOf"),
          `To Type` %in% c("Song", "Album","MusicalGroup","Person","RecordLabel")) %>%
@@ -895,10 +861,10 @@ edges_others_full <- edges_others %>%
   rename(Participant = from, ParticipantType = `Node Type`) %>%
   select(Participant, ParticipantType, to, `Edge Type`)
 
-knitr::kable(head(edges_others_full, 6))
+knitr::kable(edges_others_full)
 ```
 
-From the result we can see, in this dataset,Ivy Echos has perform three songs.
+From the result we can see, in this dataset,Ivy Echos has perform three songs.These will late add in the Folk Musci Group for further analysis
 
 For more convenient exploration, we selected the nodes connected to the third layer in order to observe indirect influences
 
@@ -906,7 +872,7 @@ Get the complete information of the from node
 
 ```{r}
 #| code-fold: true
-#| code-summary: "code"
+#| code-summary: "Get the complete information of the from node"
 nodes_tbl <- nodes_tbl %>% mutate(index = row_number())
 
 sailor_index <- nodes_tbl %>%
@@ -931,7 +897,7 @@ edges_2nd <- edges_tbl %>%
 
 ```{r}
 #| code-fold: true
-#| code-summary: "code"
+#| code-summary: "Get the complete information of the from node"
 edges_1st <- edges_all %>%
   filter(from == "Sailor Shift")
 
@@ -972,12 +938,12 @@ edges_2nd_full <- edges_2nd %>%
   )
 
 
-knitr::kable(head(edges_2nd_full, 6))
+knitr::kable(edges_2nd_full)
 ```
 
 ```{r}
 #| code-fold: true
-#| code-summary: "code"
+#| code-summary: "Get the complete information of the from node (From and To Info)"
 from_info <- nodes_all %>%
   select(name, `Node Type`, release_date, genre, notable, notoriety_date) %>%
   rename(
@@ -1009,7 +975,7 @@ edges_2nd_full <- edges_2nd %>%
     `Edge Type`
   )
 
-knitr::kable(head(edges_2nd_full, 6))
+knitr::kable(edges_2nd_full)
 ```
 
 Now we can observe the next layer — identifying which songs and related works have influenced Sailor Shift. At the same time, we also aim to incorporate the time dimension into this analysis.
@@ -1130,7 +1096,7 @@ We analyze the 'Person → Work' connections that contribute to the influence on
 
 ```{r}
 #| code-fold: true
-#| code-summary: "code"
+#| code-summary: "'Person → Work' connections on Sailor Shift’s second-layer works"
 nodes_tbl <- nodes_tbl %>% mutate(index = row_number())
 
 sailor_index <- nodes_tbl %>%
@@ -1176,7 +1142,7 @@ edges_people_to_2nd_tbl <- edges_people_to_2nd %>%
   rename(`Work Name` = name) %>%
   select(`Person Name`, `Work Name`, `Edge Type`, `From Node Type`, `To Node Type`, release_date)
 
-knitr::kable(head(edges_people_to_2nd_tbl, 10))
+knitr::kable(edges_people_to_2nd_tbl)
 ```
 
 **Final Visualization Summary: Direct and Indirect Influences on Sailor Shift**
@@ -1295,9 +1261,7 @@ In the third layer of the influence network, most of the connections are formed 
 This cascading network of style, melody, and lyrical influence reflects not only her artistic lineage, but also reveals the broader creative transmission ecosystem within the Oceanus Folk community.
 :::
 
-### 2.Who has she collaborated with and directly or indirectly influenced? &
-
-### 3.How has she influenced collaborators of the broader Oceanus Folk community
+### **2.Who has she collaborated with and directly or indirectly influenced? & 3.How has she influenced collaborators of the broader Oceanus Folk community**
 
 **First we will first answer ：Who has she influenced ?**
 
@@ -1321,11 +1285,12 @@ influenced1 <- edges_from_sailor %>%
 ```
 
 ```{r}
-knitr::kable(head(influenced1, 10))
+knitr::kable(influenced1)
 ```
 
 ```{r}
-
+#| code-fold: true
+#| code-summary: "Directly neighbours that she has influenced"
 
 subgraph_in <- extract_subnetwork(
   graph, 
@@ -1518,7 +1483,7 @@ visNetwork(nodes_vn, edges_final, height = "700px", width = "100%") %>%
 ```
 
 ::: callout-note
-## How has Sailor Shift influenced collaborators within the broader Oceanus Folk community
+## How has Sailor Shift influenced collaborators within the broader Oceanus Folk community?
 
 Sailor Shift → influences Copper Canyon Ghosts → performs representative works → connects with Daniel and Beatrice through shared creations
 
