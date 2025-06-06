@@ -99,7 +99,7 @@ The code churn below will turn on the interactive mode of tmap.
 tmap_mode("view")
 ```
 
-##  It all started with an interactive point symbol map
+## It all started with an interactive point symbol map
 
 The code chunks below are used to create an interactive point symbol map.
 
@@ -173,7 +173,7 @@ tmap_mode("plot")
 
 -   [Exploring and presenting maps with tmap (useR!2017)](http://von-tijn.nl/tijn/research/presentations/tmap_user2017.pdf)
 
-##  Geospatial data wrangling
+## Geospatial data wrangling
 
 -   [sf: Simple Features for R](https://cran.r-project.org/web/packages/sf/index.html)
 

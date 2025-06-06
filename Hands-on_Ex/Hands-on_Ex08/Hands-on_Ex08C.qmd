@@ -41,7 +41,7 @@ By the end of this in-class exercise, you will be able to use appropriate functi
 pacman::p_load(tmap, tidyverse, sf)
 ```
 
-###  Importing data
+### Importing data
 
 For the purpose of this hands-on exercise, a prepared data set called *NGA_wp.rds* will be used. The data set is a polygon feature data.frame providing information on water point of Nigeria at the LGA level. You can find the data set in the *rds* sub-direct of the hands-on *data* folder.
 
@@ -51,7 +51,7 @@ NGA_wp <- read_rds("data/rds/NGA_wp.rds")
 
 ## Basic Choropleth Mapping
 
-###  Visualising distribution of non-functional water point
+### Visualising distribution of non-functional water point
 
 ```{r}
 NGA_wp$wp_functional <- as.numeric(as.character(NGA_wp$wp_functional))
@@ -154,7 +154,6 @@ quantile(var[,1], percent)
 ```
 
 ::: callout-important
-
 When variables are extracted from an sf data.frame, the geometry is extracted as well. For mapping and spatial manipulation, this is the expected behavior, but many base R functions cannot deal with the geometry. Specifically, the `quantile()` gives an error. As a result `st_set_geomtry(NULL)` is used to drop geomtry field.
 :::
 
@@ -281,7 +280,7 @@ boxbreaks <- function(v,mult=1.5) {
 }
 ```
 
-####  Creating the get.var function
+#### Creating the get.var function
 
 The code chunk below is an R function to extract a variable as a vector out of an sf data frame.
 
