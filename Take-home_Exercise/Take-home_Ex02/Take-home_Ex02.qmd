@@ -109,6 +109,7 @@ Next, `as_tibble()` of **tibble** package package is used to **extract the nodes
 ```{r}
 nodes_tbl <- as_tibble(kg$nodes)
 edges_tbl <- as_tibble(kg$links) 
+
 ```
 
 ### Initial EDA
@@ -1260,7 +1261,7 @@ In the third layer of the influence network, most of the connections are formed 
 This cascading network of style, melody, and lyrical influence reflects not only her artistic lineage, but also reveals the broader creative transmission ecosystem within the Oceanus Folk community.
 :::
 
-### **2.Who has she collaborated with and directly or indirectly influenced? &** 
+### **2.Who has she collaborated with and directly or indirectly influenced? &**
 
 ### **3.How has she influenced collaborators of the broader Oceanus Folk community**
 
