@@ -75,6 +75,9 @@ website:
             href: "Take-home_Exercise/Take-home_Ex01/Take-home_Ex01B.html"
           - text: "Take home exercise 2"
             href: "Take-home_Exercise/Take-home_Ex02/Take-home_Ex02.html"
+          - text: "Take home exercise 3"
+            href: https://isss608-group16-echoscope.netlify.app/storyboard 
+            
 
     right:
       - href: index.qmd
