@@ -87,7 +87,7 @@ product <- coffeechain %>%
   ungroup()
 ```
 
-###  Bullet chart in ggplot2
+### Bullet chart in ggplot2
 
 The code chunk below is used to plot the bullet charts using ggplot2 functions.
 
