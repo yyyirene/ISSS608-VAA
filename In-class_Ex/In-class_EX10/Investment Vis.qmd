@@ -4,7 +4,7 @@ date: "June 28 2025"
 format: dashboard
 date-modified: "last-modified"
 theme: 
-  - darkly
+  -darkly
 execute: 
   eval: true
   echo: false
@@ -130,6 +130,49 @@ p <- ggplot(data = df, aes(x = date, y = close)) +
   theme_classic()
 
 ggplotly(p)
+```
+
+```{r}
+library(plotly)
+library(dplyr)
+library(TTR)
+
+# 示例数据准备
+# 假设 df 包含 columns: date, open, high, low, close
+df <- df %>%
+  arrange(date) %>%
+  mutate(
+    SMA5 = SMA(close, n = 5),
+    SMA15 = SMA(close, n = 15)
+  )
+
+# 主图（带 SMA）
+main_chart <- plot_ly(df, x = ~date, type = "candlestick",
+                      open = ~open, high = ~high, low = ~low, close = ~close,
+                      increasing = list(line = list(color = "green")),
+                      decreasing = list(line = list(color = "red")),
+                      name = "Price") %>%
+  add_lines(x = ~date, y = ~SMA5, name = "SMA5",
+            line = list(color = "purple"), inherit = FALSE) %>%
+  add_lines(x = ~date, y = ~SMA15, name = "SMA15",
+            line = list(color = "orange"), inherit = FALSE) %>%
+  layout(
+    yaxis = list(title = "Price"),
+    showlegend = TRUE
+  )
+
+# 副图（缩放控制）
+sub_chart <- plot_ly(df, x = ~date, y = ~close, type = 'scatter', mode = 'lines',
+                     line = list(color = "gray"), name = "Close (zoom)") %>%
+  layout(
+    yaxis = list(title = "Zoom", showticklabels = FALSE),
+    xaxis = list(title = "Date", rangeslider = list(visible = TRUE))
+  )
+
+# 上下联动拼图
+subplot(main_chart, sub_chart, nrows = 2, heights = c(0.75, 0.25), shareX = TRUE, titleY = TRUE) %>%
+  layout(title = "Interactive Technical Analysis of DBS Stock")
+
 ```
 
 # OCBC
