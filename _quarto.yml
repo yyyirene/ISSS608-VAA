@@ -45,40 +45,39 @@ website:
             href: "Hands-on_Ex/Hands-on_Ex09/Hands-on_Ex09E.html"
           - text: "Hands-on Exercise 10"
             href: "Hands-on_Ex/Hands-on_Ex10/Hands-on_Ex10.html"
-          
 
       - text: "In-class Exercise"
         menu:
           - text: "In-class Exercise 0"
-            href:  https://public.tableau.com/app/profile/irene.yang2979/vizzes
+            href: "https://public.tableau.com/app/profile/irene.yang2979/vizzes"
           - text: "In-class Exercise 2"
-            href:  https://public.tableau.com/app/profile/irene.yang2979/viz/In-classExercise2_17456546356590/1_1
+            href: "https://public.tableau.com/app/profile/irene.yang2979/viz/In-classExercise2_17456546356590/1_1"
           - text: "In-class Exercise 3"
-            href:  https://public.tableau.com/app/profile/irene.yang2979/viz/In-classExercise3_17462585397760/1
+            href: "https://public.tableau.com/app/profile/irene.yang2979/viz/In-classExercise3_17462585397760/1"
           - text: "In-class Exercise 4"
             href: "In-class_Ex/In-class_Ex4/In-class_Ex4.html"
           - text: "In-class Exercise 5"
             href: "In-class_Ex/In-class_Ex5/In-class_Ex5.html"
           - text: "In-class Exercise 6.1"
-            href: https://public.tableau.com/app/profile/irene.yang2979/viz/In-classExercise6_17480704656520/1
+            href: "https://public.tableau.com/app/profile/irene.yang2979/viz/In-classExercise6_17480704656520/1"
           - text: "In-class Exercise 6.2"
-            href:  https://public.tableau.com/app/profile/irene.yang2979/viz/In-classExercise6_2/1
+            href: "https://public.tableau.com/app/profile/irene.yang2979/viz/In-classExercise6_2/1"
           - text: "In-class Exercise 7"
-            href: https://ireneyyy333.shinyapps.io/ShinyApp/
+            href: "https://ireneyyy333.shinyapps.io/ShinyApp/"
           - text: "In-class Exercise 8.1"
-            href: https://public.tableau.com/app/profile/irene.yang2979/viz/In-ClassExercise8_1/SGPoolsOverall
+            href: "https://public.tableau.com/app/profile/irene.yang2979/viz/In-ClassExercise8_1/SGPoolsOverall"
           - text: "In-class Exercise 8.2"
-            href: https://public.tableau.com/app/profile/irene.yang2979/viz/In-ClassExercise8_2/SingaporePropertyDistribution
-          - text: "In-class Exercise 8.3"  
-            href: https://public.tableau.com/app/profile/irene.yang2979/viz/In-ClassExercise8_3/SingaporeSubzonePopulationDistribution
+            href: "https://public.tableau.com/app/profile/irene.yang2979/viz/In-ClassExercise8_2/SingaporePropertyDistribution"
+          - text: "In-class Exercise 8.3"
+            href: "https://public.tableau.com/app/profile/irene.yang2979/viz/In-ClassExercise8_3/SingaporeSubzonePopulationDistribution"
           - text: "In-class Exercise 9"
-            href: https://public.tableau.com/app/profile/irene.yang2979/viz/SingaporePopulationInsightsbySubzone/1_1
+            href: "https://public.tableau.com/app/profile/irene.yang2979/viz/SingaporePopulationInsightsbySubzone/1_1"
           - text: "In-class Exercise 9.2"
-            href: https://public.tableau.com/app/profile/irene.yang2979/viz/BePropertyWiseorOtherwiser/1
+            href: "https://public.tableau.com/app/profile/irene.yang2979/viz/BePropertyWiseorOtherwiser/1"
           - text: "In-class Exercise 10"
             href: "In-class_Ex/In-class_EX10/Investment Vis.html"
           - text: "In-class Exercise 10.2"
-            href: https://public.tableau.com/app/profile/irene.yang2979/viz/InclassExSalesTrendSummary/1_1
+            href: "https://public.tableau.com/app/profile/irene.yang2979/viz/InclassExSalesTrendSummary/1_1"
 
       - text: "Take-home Exercise"
         menu:
@@ -89,7 +88,15 @@ website:
           - text: "Take home exercise 2"
             href: "Take-home_Exercise/Take-home_Ex02/Take-home_Ex02.html"
           - text: "Take home exercise 3"
-            href: https://isss608-group16-echoscope.netlify.app/storyboard 
+            href: "https://isss608-group16-echoscope.netlify.app/storyboard"
+
+      - text: "Group Project"
+        menu:
+          - text: "Group Project-Echoscope-Official"
+            href: "https://isss608-group16-echoscope-official.netlify.app/"
+
+
+
             
 
     right:
